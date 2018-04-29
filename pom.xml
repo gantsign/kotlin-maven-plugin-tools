@@ -68,7 +68,7 @@
     </dependency>
     <dependency>
       <groupId>org.jetbrains.kotlin</groupId>
-      <artifactId>kotlin-test</artifactId>
+      <artifactId>kotlin-test-junit</artifactId>
       <version>${kotlin.version}</version>
       <scope>test</scope>
     </dependency>
@@ -193,6 +193,7 @@
                 <dependency>junit:junit</dependency>
                 <dependency>org.assertj:assertj-core</dependency>
                 <dependency>org.jetbrains.kotlin:kotlin-test:jar</dependency>
+                <dependency>org.jetbrains.kotlin:kotlin-test-junit</dependency>
               </ignoredUnusedDeclaredDependencies>
             </configuration>
           </execution>
