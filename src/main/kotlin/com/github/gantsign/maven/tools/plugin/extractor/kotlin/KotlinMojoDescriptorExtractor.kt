@@ -79,9 +79,9 @@ class JavaAnnotationsMojoDescriptorExtractor : AbstractLogEnabled(), MojoDescrip
 
         val javaClassesMap = request.scanJavadoc(mojoAnnotatedClasses.values)
 
-        populateDataFromJavadoc(mojoAnnotatedClasses, javaClassesMap)
+        mojoAnnotatedClasses.populateDataFromJavadoc(javaClassesMap)
 
-        return toMojoDescriptors(mojoAnnotatedClasses, request.pluginDescriptor)
+        return mojoAnnotatedClasses.toMojoDescriptors(request.pluginDescriptor)
     }
 
     private fun PluginToolsRequest.scanAnnotations(): Map<String, MojoAnnotatedClass> {
@@ -189,13 +189,7 @@ class JavaAnnotationsMojoDescriptorExtractor : AbstractLogEnabled(), MojoDescrip
                 extract()
             }
 
-            return request.let {
-                discoverClasses(
-                    it.encoding,
-                    listOf(extractDirectory),
-                    it.dependencies
-                )
-            }
+            return extractDirectory.discoverClasses(request)
         } catch (e: ArtifactResolutionException) {
             throw ExtractionException(e.message, e)
         } catch (e: ArtifactNotFoundException) {
@@ -210,10 +204,11 @@ class JavaAnnotationsMojoDescriptorExtractor : AbstractLogEnabled(), MojoDescrip
     /**
      * Scan sources to get @since and @deprecated and description of classes and fields.
      */
-    private fun populateDataFromJavadoc(
-        mojoAnnotatedClasses: Map<String, MojoAnnotatedClass>,
+    private fun Map<String, MojoAnnotatedClass>.populateDataFromJavadoc(
         javaClassesMap: Map<String, JavaClass>
     ) {
+        val mojoAnnotatedClasses = this
+
         for ((className, mojoAnnotatedClass) in mojoAnnotatedClasses) {
             val javaClass = javaClassesMap[className] ?: continue
 
@@ -323,13 +318,20 @@ class JavaAnnotationsMojoDescriptorExtractor : AbstractLogEnabled(), MojoDescrip
             sources += generatedPlugin
         }
 
-        return discoverClasses(encoding, sources, artifacts)
+        return sources.discoverClasses(encoding, artifacts)
     }
 
-    private fun discoverClasses(
-        encoding: String, sourceDirectories: List<Path>,
+    private fun Path.discoverClasses(
+        request: PluginToolsRequest
+    ): Map<String, JavaClass> =
+        listOf(this)
+            .discoverClasses(request.encoding!!, request.dependencies!!)
+
+    private fun List<Path>.discoverClasses(
+        encoding: String,
         artifacts: Set<Artifact>
     ): Map<String, JavaClass> {
+        val sourceDirectories = this
 
         // Build isolated Classloader with only the artifacts of the project (none of this plugin)
         val classLoader = URLClassLoader(
@@ -363,17 +365,20 @@ class JavaAnnotationsMojoDescriptorExtractor : AbstractLogEnabled(), MojoDescrip
         return javaClasses.associateBy { it.fullyQualifiedName!! }
     }
 
-    private fun toMojoDescriptors(
-        mojoAnnotatedClasses: Map<String, MojoAnnotatedClass>,
+    private fun Map<String, MojoAnnotatedClass>.toMojoDescriptors(
         pluginDescriptor: PluginDescriptor
-    ): List<MojoDescriptor> = mojoAnnotatedClasses.values
-        .filter { mojoAnnotatedClass ->
-            // no mojo so skip it
-            mojoAnnotatedClass.mojo != null
-        }
-        .map { mojoAnnotatedClass ->
-            mojoAnnotatedClass.toMojoDescriptor(mojoAnnotatedClasses, pluginDescriptor)
-        }
+    ): List<MojoDescriptor> {
+        val mojoAnnotatedClasses = this
+
+        return mojoAnnotatedClasses.values
+            .filter { mojoAnnotatedClass ->
+                // no mojo so skip it
+                mojoAnnotatedClass.mojo != null
+            }
+            .map { mojoAnnotatedClass ->
+                mojoAnnotatedClass.toMojoDescriptor(mojoAnnotatedClasses, pluginDescriptor)
+            }
+    }
 
     private fun MojoAnnotatedClass.toMojoDescriptor(
         mojoAnnotatedClasses: Map<String, MojoAnnotatedClass>,
