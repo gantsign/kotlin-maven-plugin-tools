@@ -20,7 +20,6 @@ package org.apache.maven.tools.plugin.extractor.annotations.examples;
  * #L%
  */
 
-import org.apache.maven.artifact.resolver.ArtifactResolver;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecution;
 import org.apache.maven.plugins.annotations.Component;
@@ -30,6 +29,7 @@ import org.apache.maven.plugins.annotations.LifecyclePhase;
 import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.plugins.annotations.ResolutionScope;
+import org.apache.maven.repository.RepositorySystem;
 import org.codehaus.plexus.compiler.manager.CompilerManager;
 import org.codehaus.plexus.compiler.manager.DefaultCompilerManager;
 
@@ -79,7 +79,7 @@ public class LocalMojo extends AbstractMojo {
   )
   protected String everythingParameter;
 
-  @Component protected ArtifactResolver minimalComponent;
+  @Component protected RepositorySystem minimalComponent;
 
   /**
    * Everything component description.

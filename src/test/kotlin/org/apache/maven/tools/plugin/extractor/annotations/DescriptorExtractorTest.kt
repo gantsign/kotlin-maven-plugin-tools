@@ -218,7 +218,7 @@ class DescriptorExtractorTest {
             assertThat(isEditable).isFalse()
             assertThat(defaultValue).isNull()
             assertThat(requirement).isNotNull
-            assertThat(requirement.role).isEqualTo("org.apache.maven.artifact.resolver.ArtifactResolver")
+            assertThat(requirement.role).isEqualTo("org.apache.maven.repository.RepositorySystem")
             assertThat(requirement.roleHint).isEmpty()
             assertThat(implementation).isNull()
             assertThat(since).isNull()
@@ -349,7 +349,7 @@ class DescriptorExtractorTest {
             assertThat(isEditable).isFalse()
             assertThat(defaultValue).isNull()
             assertThat(requirement).isNotNull
-            assertThat(requirement.role).isEqualTo("org.apache.maven.artifact.resolver.ArtifactResolver")
+            assertThat(requirement.role).isEqualTo("org.apache.maven.repository.RepositorySystem")
             assertThat(requirement.roleHint).isEmpty()
             assertThat(implementation).isNull()
             assertThat(since).isNull()

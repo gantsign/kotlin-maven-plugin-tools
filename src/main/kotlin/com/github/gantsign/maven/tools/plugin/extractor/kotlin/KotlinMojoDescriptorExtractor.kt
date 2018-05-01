@@ -25,16 +25,16 @@ import com.thoughtworks.qdox.model.DocletTag
 import com.thoughtworks.qdox.model.JavaClass
 import com.thoughtworks.qdox.model.JavaField
 import org.apache.maven.artifact.Artifact
-import org.apache.maven.artifact.factory.ArtifactFactory
 import org.apache.maven.artifact.resolver.ArtifactNotFoundException
 import org.apache.maven.artifact.resolver.ArtifactResolutionException
-import org.apache.maven.artifact.resolver.ArtifactResolver
+import org.apache.maven.artifact.resolver.ArtifactResolutionRequest
 import org.apache.maven.plugin.descriptor.InvalidParameterException
 import org.apache.maven.plugin.descriptor.MojoDescriptor
 import org.apache.maven.plugin.descriptor.Parameter
 import org.apache.maven.plugin.descriptor.PluginDescriptor
 import org.apache.maven.plugin.descriptor.Requirement
 import org.apache.maven.project.MavenProject
+import org.apache.maven.repository.RepositorySystem
 import org.apache.maven.tools.plugin.ExtendedMojoDescriptor
 import org.apache.maven.tools.plugin.PluginToolsRequest
 import org.apache.maven.tools.plugin.extractor.ExtractionException
@@ -69,10 +69,7 @@ class JavaAnnotationsMojoDescriptorExtractor : AbstractLogEnabled(), MojoDescrip
     private lateinit var mojoAnnotationsScanner: MojoAnnotationsScanner
 
     @PlexusRequirement
-    private lateinit var artifactResolver: ArtifactResolver
-
-    @PlexusRequirement
-    private lateinit var artifactFactory: ArtifactFactory
+    private lateinit var repositorySystem: RepositorySystem
 
     @PlexusRequirement
     private lateinit var archiverManager: ArchiverManager
@@ -151,7 +148,7 @@ class JavaAnnotationsMojoDescriptorExtractor : AbstractLogEnabled(), MojoDescrip
 
         try {
             val sourcesArtifact =
-                artifactFactory.createArtifactWithClassifier(
+                repositorySystem.createArtifactWithClassifier(
                     artifact.groupId!!,
                     artifact.artifactId!!,
                     artifact.version!!,
@@ -159,7 +156,11 @@ class JavaAnnotationsMojoDescriptorExtractor : AbstractLogEnabled(), MojoDescrip
                     classifier
                 )!!
 
-            artifactResolver.resolve(sourcesArtifact, request.remoteRepos, request.local)
+            repositorySystem.resolve(ArtifactResolutionRequest().apply {
+                this.artifact = sourcesArtifact
+                localRepository = request.local
+                remoteRepositories = request.remoteRepos
+            })
 
             val sourcesArtifactFile = sourcesArtifact.file
                 ?.takeIf(File::exists)
