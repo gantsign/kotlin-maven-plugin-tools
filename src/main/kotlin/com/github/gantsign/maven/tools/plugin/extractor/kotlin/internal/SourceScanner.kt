@@ -166,7 +166,7 @@ internal class SourceScanner(
             .resolve(Paths.get("target", "generated-sources", "plugin"))
             .toAbsolutePath()!!
 
-        if (!compileSourceRoots.contains(generatedPlugin.toString())
+        if (generatedPlugin.toString() !in compileSourceRoots
             && Files.exists(generatedPlugin)
         ) {
             sources += generatedPlugin

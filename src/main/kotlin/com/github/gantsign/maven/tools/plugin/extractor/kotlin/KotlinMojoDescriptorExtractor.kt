@@ -270,7 +270,7 @@ class JavaAnnotationsMojoDescriptorExtractor : AbstractLogEnabled(), MojoDescrip
             description = parameterAnnotationContent.description
             isEditable = !parameterAnnotationContent.readonly()
             val property: String? = parameterAnnotationContent.property()
-            if (property?.let { it.contains('$') || it.contains('{') || it.contains('}') } == true) {
+            if (property?.let { '$' in it || '{' in it || '}' in it } == true) {
                 throw InvalidParameterException(
                     "Invalid property for parameter '$name', forbidden characters '\${}': $property",
                     null
