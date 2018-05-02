@@ -91,8 +91,7 @@ internal class SourceScanner(
         return classMapFromExternalSources + classMapFromReactorSources + classMapFromLocalSources
     }
 
-    private fun MojoAnnotatedClass?.isCandidate(): Boolean =
-        this != null && hasAnnotations()
+    private fun MojoAnnotatedClass.isCandidate(): Boolean = hasAnnotations()
 
     private fun Artifact.discoverClassesFromSourcesJar(
         request: PluginToolsRequest,
