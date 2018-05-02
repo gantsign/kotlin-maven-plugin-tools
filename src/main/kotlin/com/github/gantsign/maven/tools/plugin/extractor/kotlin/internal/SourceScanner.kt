@@ -216,8 +216,9 @@ internal class SourceScanner(
         return javaClasses.associateBy { it.fullyQualifiedName!! }
     }
 
-    private fun Artifact.fromProjectReferences(project: MavenProject): MavenProject? =
-        project.projectReferences?.values?.let { mavenProjects ->
-            mavenProjects.firstOrNull { it.id == id }
-        }
+    private fun Artifact.fromProjectReferences(project: MavenProject): MavenProject? {
+        val mavenProjects: Collection<MavenProject>? = project.projectReferences?.values
+
+        return mavenProjects?.firstOrNull { it.id == id }
+    }
 }
