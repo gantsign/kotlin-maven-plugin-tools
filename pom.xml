@@ -594,6 +594,9 @@
             <exclude>com/github/gantsign/maven/tools/plugin/extractor/kotlin/internal/ClassDoc.*</exclude>
             <exclude>com/github/gantsign/maven/tools/plugin/extractor/kotlin/internal/DocTag.*</exclude>
             <exclude>com/github/gantsign/maven/tools/plugin/extractor/kotlin/internal/PropertyDoc.*</exclude>
+            <exclude>com/github/gantsign/maven/tools/plugin/extractor/kotlin/internal/SourceScanRequest.*</exclude>
+            <exclude>com/github/gantsign/maven/tools/plugin/extractor/kotlin/internal/SourceScanRequest$ArtifactScanRequest.*</exclude>
+            <exclude>com/github/gantsign/maven/tools/plugin/extractor/kotlin/internal/SourceScanRequest$ProjectScanRequest.*</exclude>
           </excludes>
         </configuration>
         <executions>

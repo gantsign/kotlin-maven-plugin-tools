@@ -19,6 +19,8 @@
  */
 package com.github.gantsign.maven.tools.plugin.extractor.kotlin.internal
 
+import com.github.gantsign.maven.tools.plugin.extractor.kotlin.internal.SourceScanRequest.ArtifactScanRequest
+import com.github.gantsign.maven.tools.plugin.extractor.kotlin.internal.SourceScanRequest.ProjectScanRequest
 import com.thoughtworks.qdox.JavaProjectBuilder
 import com.thoughtworks.qdox.library.SortedClassLibraryBuilder
 import com.thoughtworks.qdox.model.DocletTag
@@ -75,30 +77,31 @@ internal class SourceScanner(
                 ?: externalArtifacts.add(classArtifact)
         }
 
-        val classMapFromExternalSources: Map<String, ClassDoc> = externalArtifacts
-            .map { artifact ->
+        val scanRequestsForExternalSources: List<SourceScanRequest> =
+            externalArtifacts.mapNotNull { artifact ->
                 val isTestSources = "tests".equals(artifact.classifier, ignoreCase = true)
                 val classifier = if (isTestSources) "test-sources" else "sources"
 
-                artifact.discoverClassesFromSourcesJar(request, classifier)
+                artifact.createScanRequest(request, classifier)
             }
-            .fold(mutableMapOf()) { acc, element -> acc.putAll(element); acc }
 
-        val classMapFromReactorSources: Map<String, ClassDoc> = mavenProjects
-            .map { it.discoverClasses(request.encoding) }
-            .fold(mutableMapOf()) { acc, element -> acc.putAll(element); acc }
+        val scanRequestsForReactorSources: List<ProjectScanRequest> =
+            mavenProjects.map { it.createScanRequest() }
 
-        val classMapFromLocalSources = request.discoverClasses()
+        val scanRequestsForLocalSources = request.project.createScanRequest()
 
-        return classMapFromExternalSources + classMapFromReactorSources + classMapFromLocalSources
+        val sourceScanRequests =
+            scanRequestsForExternalSources + scanRequestsForReactorSources + scanRequestsForLocalSources
+
+        return scanSourceDoc(request, sourceScanRequests)
     }
 
     private fun MojoAnnotatedClass.isCandidate(): Boolean = hasAnnotations()
 
-    private fun Artifact.discoverClassesFromSourcesJar(
+    private fun Artifact.createScanRequest(
         request: PluginToolsRequest,
         classifier: String
-    ): Map<String, ClassDoc> {
+    ): SourceScanRequest? {
         val artifact = this
 
         try {
@@ -119,7 +122,7 @@ internal class SourceScanner(
 
             val sourcesArtifactFile = sourcesArtifact.file
                 ?.takeIf(File::exists)
-                ?: return emptyMap() // could not get artifact sources
+                ?: return null // could not get artifact sources
 
             // extract sources to target/maven-plugin-plugin-sources/${groupId}/${artifact}/${version}/sources
             val extractDirectory = sourcesArtifact.let {
@@ -144,22 +147,19 @@ internal class SourceScanner(
                 extract()
             }
 
-            return extractDirectory.discoverClasses(request)
+            return ArtifactScanRequest(artifact, extractDirectory)
         } catch (e: ArtifactResolutionException) {
             throw ExtractionException(e.message, e)
         } catch (e: ArtifactNotFoundException) {
             logger.debug("skip ArtifactNotFoundException: ${e.message}")
             logger.warn("Unable to get sources artifact for ${artifact.groupId}:${artifact.artifactId}:${artifact.version}; javadoc tags (@since, @deprecated and comments) won't be available.")
-            return emptyMap()
+            return null
         } catch (e: NoSuchArchiverException) {
             throw ExtractionException(e.message, e)
         }
     }
 
-    private fun PluginToolsRequest.discoverClasses(): Map<String, ClassDoc> =
-        project.discoverClasses(encoding)
-
-    private fun MavenProject.discoverClasses(encoding: String): Map<String, ClassDoc> {
+    private fun MavenProject.createScanRequest(): ProjectScanRequest {
         val compileSourceRoots: List<String> = compileSourceRoots!!
         var sources = compileSourceRoots.map { Paths.get(it)!! }
 
@@ -173,14 +173,28 @@ internal class SourceScanner(
             sources += generatedPlugin
         }
 
-        return sources.discoverClasses(encoding, artifacts)
+        return ProjectScanRequest(this, sources)
     }
 
-    private fun Path.discoverClasses(
-        request: PluginToolsRequest
-    ): Map<String, ClassDoc> =
-        listOf(this)
-            .discoverClasses(request.encoding!!, request.dependencies!!)
+    private fun scanSourceDoc(
+        request: PluginToolsRequest,
+        requests: List<SourceScanRequest>
+    ): Map<String, ClassDoc> {
+        val encoding = request.encoding!!
+        val requestDependencies: Set<Artifact> = request.dependencies!!
+
+        return requests.map {
+            when (it) {
+                is ArtifactScanRequest -> {
+                    it.sourceDirectories.discoverClasses(encoding, requestDependencies)
+                }
+
+                is ProjectScanRequest -> {
+                    it.sourceDirectories.discoverClasses(encoding, it.project.artifacts!!)
+                }
+            }
+        }.fold(mutableMapOf()) { acc, element -> acc.putAll(element); acc }
+    }
 
     private fun List<Path>.discoverClasses(
         encoding: String,
