@@ -21,11 +21,6 @@ package com.github.gantsign.maven.tools.plugin.extractor.kotlin.internal
 
 import com.github.gantsign.maven.tools.plugin.extractor.kotlin.internal.SourceScanRequest.ArtifactScanRequest
 import com.github.gantsign.maven.tools.plugin.extractor.kotlin.internal.SourceScanRequest.ProjectScanRequest
-import com.thoughtworks.qdox.JavaProjectBuilder
-import com.thoughtworks.qdox.library.SortedClassLibraryBuilder
-import com.thoughtworks.qdox.model.DocletTag
-import com.thoughtworks.qdox.model.JavaClass
-import com.thoughtworks.qdox.model.JavaField
 import org.apache.maven.artifact.Artifact
 import org.apache.maven.artifact.resolver.ArtifactNotFoundException
 import org.apache.maven.artifact.resolver.ArtifactResolutionException
@@ -40,10 +35,7 @@ import org.codehaus.plexus.archiver.manager.NoSuchArchiverException
 import org.codehaus.plexus.logging.Logger
 import java.io.File
 import java.io.IOException
-import java.net.MalformedURLException
-import java.net.URLClassLoader
 import java.nio.file.Files
-import java.nio.file.Path
 import java.nio.file.Paths
 
 internal class SourceScanner(
@@ -93,7 +85,9 @@ internal class SourceScanner(
         val sourceScanRequests =
             scanRequestsForExternalSources + scanRequestsForReactorSources + scanRequestsForLocalSources
 
-        return scanSourceDoc(request, sourceScanRequests)
+        val qDoxSourceScanner = QDoxSourceScanner(request)
+
+        return qDoxSourceScanner.scanSourceDoc(sourceScanRequests)
     }
 
     private fun MojoAnnotatedClass.isCandidate(): Boolean = hasAnnotations()
@@ -176,98 +170,9 @@ internal class SourceScanner(
         return ProjectScanRequest(this, sources)
     }
 
-    private fun scanSourceDoc(
-        request: PluginToolsRequest,
-        requests: List<SourceScanRequest>
-    ): Map<String, ClassDoc> {
-        val encoding = request.encoding!!
-        val requestDependencies: Set<Artifact> = request.dependencies!!
-
-        return requests.map {
-            when (it) {
-                is ArtifactScanRequest -> {
-                    it.sourceDirectories.discoverClasses(encoding, requestDependencies)
-                }
-
-                is ProjectScanRequest -> {
-                    it.sourceDirectories.discoverClasses(encoding, it.project.artifacts!!)
-                }
-            }
-        }.fold(mutableMapOf()) { acc, element -> acc.putAll(element); acc }
-    }
-
-    private fun List<Path>.discoverClasses(
-        encoding: String,
-        artifacts: Set<Artifact>
-    ): Map<String, ClassDoc> {
-        val sourceDirectories = this
-
-        // Build isolated Classloader with only the artifacts of the project (none of this plugin)
-        val classLoader = URLClassLoader(
-            artifacts.asSequence()
-                .mapNotNull({
-                    try {
-                        it.file.toURI().toURL()!!
-                    } catch (e: MalformedURLException) {
-                        null
-                    }
-                })
-                .toList()
-                .toTypedArray(),
-            ClassLoader.getSystemClassLoader()
-        )
-
-        val builder = JavaProjectBuilder(SortedClassLibraryBuilder()).apply {
-            setEncoding(encoding)
-            addClassLoader(classLoader)
-
-            for (dir in sourceDirectories) {
-                addSourceTree(dir.toFile())
-            }
-        }
-
-        val javaClasses: MutableCollection<JavaClass> = builder.classes ?: return emptyMap()
-
-        return javaClasses.associateBy { it.fullyQualifiedName!! }.toClassDocMap()
-    }
-
     private fun Artifact.fromProjectReferences(project: MavenProject): MavenProject? {
         val mavenProjects: Collection<MavenProject>? = project.projectReferences?.values
 
         return mavenProjects?.firstOrNull { it.id == id }
     }
-
-    private fun Map<String, JavaClass>.toClassDocMap(): Map<String, ClassDoc> {
-        val classDocs = values.asSequence()
-            .map { javaClass ->
-                ClassDoc(
-                    fullyQualifiedName = javaClass.fullyQualifiedName,
-                    comment = javaClass.comment,
-                    properties = javaClass.fields.toPropertyDocs(),
-                    tags = javaClass.tags.toDocTags()
-                )
-            }
-            .associateBy(ClassDoc::fullyQualifiedName)
-
-        val superClassMapping = values
-            .associate { it.fullyQualifiedName!! to it.superJavaClass?.fullyQualifiedName!! }
-
-        for (classDoc in classDocs.values) {
-            classDoc.superClassDoc = classDocs[superClassMapping[classDoc.fullyQualifiedName]]
-        }
-
-        return classDocs
-    }
-
-    private fun List<JavaField>.toPropertyDocs(): List<PropertyDoc> =
-        map { javaField ->
-            PropertyDoc(
-                name = javaField.name,
-                comment = javaField.comment,
-                tags = javaField.tags.toDocTags()
-            )
-        }
-
-    private fun List<DocletTag>.toDocTags(): Map<String, DocTag> =
-        associate { it.name to DocTag(it.value) }
 }
