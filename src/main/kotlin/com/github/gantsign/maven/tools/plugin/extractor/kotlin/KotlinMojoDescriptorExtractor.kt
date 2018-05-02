@@ -19,44 +19,29 @@
  */
 package com.github.gantsign.maven.tools.plugin.extractor.kotlin
 
-import com.thoughtworks.qdox.JavaProjectBuilder
-import com.thoughtworks.qdox.library.SortedClassLibraryBuilder
+import com.github.gantsign.maven.tools.plugin.extractor.kotlin.internal.AnnotationScanner
+import com.github.gantsign.maven.tools.plugin.extractor.kotlin.internal.SourceScanner
 import com.thoughtworks.qdox.model.DocletTag
 import com.thoughtworks.qdox.model.JavaClass
 import com.thoughtworks.qdox.model.JavaField
-import org.apache.maven.artifact.Artifact
-import org.apache.maven.artifact.resolver.ArtifactNotFoundException
-import org.apache.maven.artifact.resolver.ArtifactResolutionException
-import org.apache.maven.artifact.resolver.ArtifactResolutionRequest
 import org.apache.maven.plugin.descriptor.InvalidParameterException
 import org.apache.maven.plugin.descriptor.MojoDescriptor
 import org.apache.maven.plugin.descriptor.Parameter
 import org.apache.maven.plugin.descriptor.PluginDescriptor
 import org.apache.maven.plugin.descriptor.Requirement
-import org.apache.maven.project.MavenProject
 import org.apache.maven.repository.RepositorySystem
 import org.apache.maven.tools.plugin.ExtendedMojoDescriptor
 import org.apache.maven.tools.plugin.PluginToolsRequest
-import org.apache.maven.tools.plugin.extractor.ExtractionException
 import org.apache.maven.tools.plugin.extractor.MojoDescriptorExtractor
 import org.apache.maven.tools.plugin.extractor.annotations.datamodel.ComponentAnnotationContent
 import org.apache.maven.tools.plugin.extractor.annotations.datamodel.ExecuteAnnotationContent
 import org.apache.maven.tools.plugin.extractor.annotations.datamodel.ParameterAnnotationContent
 import org.apache.maven.tools.plugin.extractor.annotations.scanner.MojoAnnotatedClass
 import org.apache.maven.tools.plugin.extractor.annotations.scanner.MojoAnnotationsScanner
-import org.apache.maven.tools.plugin.extractor.annotations.scanner.MojoAnnotationsScannerRequest
 import org.apache.maven.tools.plugin.util.PluginUtils
 import org.codehaus.plexus.archiver.manager.ArchiverManager
-import org.codehaus.plexus.archiver.manager.NoSuchArchiverException
 import org.codehaus.plexus.component.annotations.Component
 import org.codehaus.plexus.logging.AbstractLogEnabled
-import java.io.File
-import java.io.IOException
-import java.net.MalformedURLException
-import java.net.URLClassLoader
-import java.nio.file.Files
-import java.nio.file.Path
-import java.nio.file.Paths
 import org.codehaus.plexus.component.annotations.Requirement as PlexusRequirement
 
 /**
@@ -75,130 +60,17 @@ class JavaAnnotationsMojoDescriptorExtractor : AbstractLogEnabled(), MojoDescrip
     private lateinit var archiverManager: ArchiverManager
 
     override fun execute(request: PluginToolsRequest): List<MojoDescriptor> {
-        val mojoAnnotatedClasses = request.scanAnnotations()
 
-        val javaClassesMap = request.scanJavadoc(mojoAnnotatedClasses.values)
+        val mojoAnnotatedClasses =
+            AnnotationScanner(mojoAnnotationsScanner).scanAnnotations(request)
+
+        val javaClassesMap =
+            SourceScanner(logger, repositorySystem, archiverManager)
+                .scanJavadoc(request, mojoAnnotatedClasses.values)
 
         mojoAnnotatedClasses.populateDataFromJavadoc(javaClassesMap)
 
         return mojoAnnotatedClasses.toMojoDescriptors(request.pluginDescriptor)
-    }
-
-    private fun PluginToolsRequest.scanAnnotations(): Map<String, MojoAnnotatedClass> {
-        val request = this
-
-        return mojoAnnotationsScanner.scan(MojoAnnotationsScannerRequest().apply {
-            classesDirectories = listOf(File(request.project.build.outputDirectory!!))
-            dependencies = request.dependencies!!
-            project = request.project!!
-        })
-    }
-
-    private fun PluginToolsRequest.scanJavadoc(
-        mojoAnnotatedClasses: Collection<MojoAnnotatedClass>
-    ): Map<String, JavaClass> {
-        val request = this
-        val requestProject = request.project!!
-        val requestArtifact = requestProject.artifact!!
-
-        val mavenProjects = mutableListOf<MavenProject>()
-        val externalArtifacts = mutableSetOf<Artifact>()
-        for (mojoAnnotatedClass in mojoAnnotatedClasses) {
-            val classArtifact = mojoAnnotatedClass.artifact!!
-            if (classArtifact.artifactId == requestArtifact.artifactId) {
-                continue
-            }
-
-            if (!mojoAnnotatedClass.isCandidate()) {
-                // we don't scan sources for classes without mojo annotations
-                continue
-            }
-
-            classArtifact.fromProjectReferences(requestProject)
-                ?.also { mavenProjects.add(it) }
-                ?: externalArtifacts.add(classArtifact)
-        }
-
-        val classMapFromExternalSources: Map<String, JavaClass> = externalArtifacts
-            .map { artifact ->
-                val isTestSources = "tests".equals(artifact.classifier, ignoreCase = true)
-                val classifier = if (isTestSources) "test-sources" else "sources"
-
-                artifact.discoverClassesFromSourcesJar(request, classifier)
-            }
-            .fold(mutableMapOf()) { acc, element -> acc.putAll(element); acc }
-
-        val classMapFromReactorSources: Map<String, JavaClass> = mavenProjects
-            .map { it.discoverClasses(request.encoding) }
-            .fold(mutableMapOf()) { acc, element -> acc.putAll(element); acc }
-
-        val classMapFromLocalSources = request.discoverClasses()
-
-        return classMapFromExternalSources + classMapFromReactorSources + classMapFromLocalSources
-    }
-
-    private fun MojoAnnotatedClass?.isCandidate(): Boolean =
-        this != null && hasAnnotations()
-
-    private fun Artifact.discoverClassesFromSourcesJar(
-        request: PluginToolsRequest,
-        classifier: String
-    ): Map<String, JavaClass> {
-        val artifact = this
-
-        try {
-            val sourcesArtifact =
-                repositorySystem.createArtifactWithClassifier(
-                    artifact.groupId!!,
-                    artifact.artifactId!!,
-                    artifact.version!!,
-                    artifact.type!!,
-                    classifier
-                )!!
-
-            repositorySystem.resolve(ArtifactResolutionRequest().apply {
-                this.artifact = sourcesArtifact
-                localRepository = request.local
-                remoteRepositories = request.remoteRepos
-            })
-
-            val sourcesArtifactFile = sourcesArtifact.file
-                ?.takeIf(File::exists)
-                ?: return emptyMap() // could not get artifact sources
-
-            // extract sources to target/maven-plugin-plugin-sources/${groupId}/${artifact}/${version}/sources
-            val extractDirectory = sourcesArtifact.let {
-                Paths.get(
-                    request.project.build.directory!!,
-                    "maven-plugin-plugin-sources",
-                    it.groupId!!,
-                    it.artifactId!!,
-                    it.version!!,
-                    classifier
-                )!!
-            }
-            try {
-                Files.createDirectories(extractDirectory)
-            } catch (e: IOException) {
-                throw ExtractionException(e.message, e)
-            }
-
-            archiverManager.getUnArchiver("jar").apply {
-                sourceFile = sourcesArtifactFile
-                destDirectory = extractDirectory.toFile()
-                extract()
-            }
-
-            return extractDirectory.discoverClasses(request)
-        } catch (e: ArtifactResolutionException) {
-            throw ExtractionException(e.message, e)
-        } catch (e: ArtifactNotFoundException) {
-            logger.debug("skip ArtifactNotFoundException: ${e.message}")
-            logger.warn("Unable to get sources artifact for ${artifact.groupId}:${artifact.artifactId}:${artifact.version}; javadoc tags (@since, @deprecated and comments) won't be available.")
-            return emptyMap()
-        } catch (e: NoSuchArchiverException) {
-            throw ExtractionException(e.message, e)
-        }
     }
 
     /**
@@ -299,69 +171,6 @@ class JavaAnnotationsMojoDescriptorExtractor : AbstractLogEnabled(), MojoDescrip
             return mergedParams
         }
         return searchSuperClass.extractFieldParameterTags(javaClassesMap, mergedParams)
-    }
-
-    private fun PluginToolsRequest.discoverClasses(): Map<String, JavaClass> =
-        project.discoverClasses(encoding)
-
-    private fun MavenProject.discoverClasses(encoding: String): Map<String, JavaClass> {
-        val compileSourceRoots: List<String> = compileSourceRoots!!
-        var sources = compileSourceRoots.map { Paths.get(it)!! }
-
-        val generatedPlugin = basedir.toPath()
-            .resolve(Paths.get("target", "generated-sources", "plugin"))
-            .toAbsolutePath()!!
-
-        if (!compileSourceRoots.contains(generatedPlugin.toString())
-            && Files.exists(generatedPlugin)
-        ) {
-            sources += generatedPlugin
-        }
-
-        return sources.discoverClasses(encoding, artifacts)
-    }
-
-    private fun Path.discoverClasses(
-        request: PluginToolsRequest
-    ): Map<String, JavaClass> =
-        listOf(this)
-            .discoverClasses(request.encoding!!, request.dependencies!!)
-
-    private fun List<Path>.discoverClasses(
-        encoding: String,
-        artifacts: Set<Artifact>
-    ): Map<String, JavaClass> {
-        val sourceDirectories = this
-
-        // Build isolated Classloader with only the artifacts of the project (none of this plugin)
-        val classLoader = URLClassLoader(
-            artifacts.asSequence()
-                .mapNotNull({
-                    try {
-                        it.file.toURI().toURL()!!
-                    } catch (e: MalformedURLException) {
-                        null
-                    }
-                })
-                .toList()
-                .toTypedArray(),
-            ClassLoader.getSystemClassLoader()
-        )
-
-        val builder = JavaProjectBuilder(SortedClassLibraryBuilder()).apply {
-            setEncoding(encoding)
-            addClassLoader(classLoader)
-
-            for (dir in sourceDirectories) {
-                addSourceTree(dir.toFile())
-            }
-        }
-
-        val javaClasses: MutableCollection<JavaClass> = builder.classes
-            ?.takeUnless(MutableCollection<JavaClass>::isEmpty)
-            ?: return emptyMap()
-
-        return javaClasses.associateBy { it.fullyQualifiedName!! }
     }
 
     private fun Map<String, MojoAnnotatedClass>.toMojoDescriptors(
@@ -567,13 +376,4 @@ class JavaAnnotationsMojoDescriptorExtractor : AbstractLogEnabled(), MojoDescrip
             mergedComponentAnnotationContents
         )
     }
-
-    private fun Artifact.fromProjectReferences(project: MavenProject): MavenProject? =
-        project.projectReferences
-            ?.takeUnless(MutableMap<String, MavenProject>::isEmpty)
-            ?.let { projectReferences ->
-                projectReferences.values.let { mavenProjects ->
-                    mavenProjects.firstOrNull { it.id == id }
-                }
-            }
 }
