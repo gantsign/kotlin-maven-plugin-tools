@@ -17,7 +17,7 @@
  * limitations under the License.
  * #L%
  */
-package org.apache.maven.tools.plugin.extractor.annotations
+package com.github.gantsign.maven.tools.plugin.extractor.kotlin
 
 import org.apache.maven.model.Build
 import org.apache.maven.plugin.descriptor.MojoDescriptor
