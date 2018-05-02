@@ -20,10 +20,10 @@
 package com.github.gantsign.maven.tools.plugin.extractor.kotlin
 
 import com.github.gantsign.maven.tools.plugin.extractor.kotlin.internal.AnnotationScanner
+import com.github.gantsign.maven.tools.plugin.extractor.kotlin.internal.ClassDoc
+import com.github.gantsign.maven.tools.plugin.extractor.kotlin.internal.DocTag
+import com.github.gantsign.maven.tools.plugin.extractor.kotlin.internal.PropertyDoc
 import com.github.gantsign.maven.tools.plugin.extractor.kotlin.internal.SourceScanner
-import com.thoughtworks.qdox.model.DocletTag
-import com.thoughtworks.qdox.model.JavaClass
-import com.thoughtworks.qdox.model.JavaField
 import org.apache.maven.plugin.descriptor.InvalidParameterException
 import org.apache.maven.plugin.descriptor.MojoDescriptor
 import org.apache.maven.plugin.descriptor.Parameter
@@ -64,53 +64,53 @@ class JavaAnnotationsMojoDescriptorExtractor : AbstractLogEnabled(), MojoDescrip
         val mojoAnnotatedClasses =
             AnnotationScanner(mojoAnnotationsScanner).scanAnnotations(request)
 
-        val javaClassesMap =
+        val classDocMap =
             SourceScanner(logger, repositorySystem, archiverManager)
-                .scanJavadoc(request, mojoAnnotatedClasses.values)
+                .scanSourceDoc(request, mojoAnnotatedClasses.values)
 
-        mojoAnnotatedClasses.populateDataFromJavadoc(javaClassesMap)
+        mojoAnnotatedClasses.populateDataFromJavadoc(classDocMap)
 
         return mojoAnnotatedClasses.toMojoDescriptors(request.pluginDescriptor)
     }
 
     /**
-     * Scan sources to get @since and @deprecated and description of classes and fields.
+     * Scan sources to get @since and @deprecated and description of classes and properties.
      */
     private fun Map<String, MojoAnnotatedClass>.populateDataFromJavadoc(
-        javaClassesMap: Map<String, JavaClass>
+        classDocMap: Map<String, ClassDoc>
     ) {
         val mojoAnnotatedClasses = this
 
         for ((className, mojoAnnotatedClass) in mojoAnnotatedClasses) {
-            val javaClass = javaClassesMap[className] ?: continue
+            val classDoc = classDocMap[className] ?: continue
 
             // populate class-level content
             mojoAnnotatedClass.mojo?.also { mojoAnnotationContent ->
-                mojoAnnotationContent.description = javaClass.comment
+                mojoAnnotationContent.description = classDoc.comment
 
-                javaClass.findInClassHierarchy("since")
+                classDoc.findInClassHierarchy("since")
                     ?.let { mojoAnnotationContent.since = it.value }
 
-                javaClass.findInClassHierarchy("deprecated")
+                classDoc.findInClassHierarchy("deprecated")
                     ?.let { mojoAnnotationContent.deprecated = it.value }
             }
 
-            val fieldsMap = javaClass.extractFieldParameterTags(javaClassesMap)
+            val propertyDocMap = classDoc.extractPropertyParameterTags(classDocMap)
 
             // populate parameters
             val parameters: Map<String, ParameterAnnotationContent> =
                 mojoAnnotatedClass.gatherParametersFromClassHierarchy(mojoAnnotatedClasses)
                     .toSortedMap()
 
-            for ((fieldName, parameterAnnotationContent) in parameters) {
-                val javaField = fieldsMap[fieldName] ?: continue
+            for ((propertyName, parameterAnnotationContent) in parameters) {
+                val propertyDoc = propertyDocMap[propertyName] ?: continue
 
-                parameterAnnotationContent.description = javaField.comment
+                parameterAnnotationContent.description = propertyDoc.comment
 
-                javaField.getTagByName("deprecated")
+                propertyDoc.tags["deprecated"]
                     ?.let { parameterAnnotationContent.deprecated = it.value }
 
-                javaField.getTagByName("since")
+                propertyDoc.tags["since"]
                     ?.let { parameterAnnotationContent.since = it.value }
             }
 
@@ -118,59 +118,59 @@ class JavaAnnotationsMojoDescriptorExtractor : AbstractLogEnabled(), MojoDescrip
             val components: Map<String, ComponentAnnotationContent> =
                 mojoAnnotatedClass.components!!
 
-            for ((fieldName, componentAnnotationContent) in components) {
-                val javaField = fieldsMap[fieldName] ?: continue
+            for ((propertyName, componentAnnotationContent) in components) {
+                val propertyDoc = propertyDocMap[propertyName] ?: continue
 
-                componentAnnotationContent.description = javaField.comment
+                componentAnnotationContent.description = propertyDoc.comment
 
-                javaField.getTagByName("deprecated")
+                propertyDoc.tags["deprecated"]
                     ?.let { componentAnnotationContent.deprecated = it.value }
 
-                javaField.getTagByName("since")
+                propertyDoc.tags["since"]
                     ?.let { componentAnnotationContent.since = it.value }
             }
         }
     }
 
-    private tailrec fun JavaClass.findInClassHierarchy(tagName: String): DocletTag? {
-        val tag: DocletTag? = getTagByName(tagName)
+    private tailrec fun ClassDoc.findInClassHierarchy(tagName: String): DocTag? {
+        val tag: DocTag? = tags[tagName]
 
         if (tag != null) return tag
 
-        val superClass: JavaClass = superJavaClass ?: return null
+        val superClass: ClassDoc = superClassDoc ?: return null
 
         return superClass.findInClassHierarchy(tagName)
     }
 
     /**
-     * Extract fields that are either parameters or components.
+     * Extract properties that are either parameters or components.
      *
      * @return map with Mojo parameters names as keys.
      */
-    private tailrec fun JavaClass.extractFieldParameterTags(
-        javaClassesMap: Map<String, JavaClass>,
-        descendantParams: Map<String, JavaField> = mapOf()
-    ): MutableMap<String, JavaField> {
+    private tailrec fun ClassDoc.extractPropertyParameterTags(
+        classDocMap: Map<String, ClassDoc>,
+        descendantParams: Map<String, PropertyDoc> = mapOf()
+    ): MutableMap<String, PropertyDoc> {
 
-        val superClass: JavaClass? = superJavaClass
+        val superClass: ClassDoc? = superClassDoc
 
         val searchSuperClass = when {
             superClass == null -> null
-            superClass.fields.isNotEmpty() -> superClass
+            superClass.properties.isNotEmpty() -> superClass
             else -> {
                 // maybe sources comes from scan of sources artifact
-                javaClassesMap[superClass.fullyQualifiedName]
+                classDocMap[superClass.fullyQualifiedName]
             }
         }
 
-        val localParams: Map<String, JavaField> = fields.associateBy { it.name }
+        val localParams: Map<String, PropertyDoc> = properties.associateBy(PropertyDoc::name)
 
         // the descendant params must overwrite local (parent) params
         val mergedParams = localParams.toSortedMap().also { it.putAll(descendantParams) }
         if (searchSuperClass == null) {
             return mergedParams
         }
-        return searchSuperClass.extractFieldParameterTags(javaClassesMap, mergedParams)
+        return searchSuperClass.extractPropertyParameterTags(classDocMap, mergedParams)
     }
 
     private fun Map<String, MojoAnnotatedClass>.toMojoDescriptors(
@@ -301,7 +301,7 @@ class JavaAnnotationsMojoDescriptorExtractor : AbstractLogEnabled(), MojoDescrip
                 )
             } else {
                 // not a component but a Maven object to be transformed into an expression/property: deprecated
-                logger.warn("Deprecated @Component annotation for '$name' field in ${mojoAnnotatedClass.className}: replace with @Parameter( defaultValue = \"$expression\", readonly = true )")
+                logger.warn("Deprecated @Component annotation for '$name' property in ${mojoAnnotatedClass.className}: replace with @Parameter( defaultValue = \"$expression\", readonly = true )")
                 defaultValue = expression
                 type = componentAnnotationContent.roleClassName
                 isRequired = true

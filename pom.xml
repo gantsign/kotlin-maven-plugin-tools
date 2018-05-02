@@ -588,6 +588,14 @@
       <plugin>
         <groupId>org.jacoco</groupId>
         <artifactId>jacoco-maven-plugin</artifactId>
+        <configuration>
+          <excludes>
+            <!-- Exclude data classes -->
+            <exclude>com/github/gantsign/maven/tools/plugin/extractor/kotlin/internal/ClassDoc.*</exclude>
+            <exclude>com/github/gantsign/maven/tools/plugin/extractor/kotlin/internal/DocTag.*</exclude>
+            <exclude>com/github/gantsign/maven/tools/plugin/extractor/kotlin/internal/PropertyDoc.*</exclude>
+          </excludes>
+        </configuration>
         <executions>
           <execution>
             <id>default-prepare-agent</id>
