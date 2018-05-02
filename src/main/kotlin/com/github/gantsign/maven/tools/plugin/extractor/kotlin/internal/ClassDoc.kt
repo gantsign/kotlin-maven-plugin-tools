@@ -19,7 +19,7 @@
  */
 package com.github.gantsign.maven.tools.plugin.extractor.kotlin.internal
 
-data class ClassDoc(
+internal data class ClassDoc(
     val fullyQualifiedName: String,
     val comment: String?,
     val properties: List<PropertyDoc>,

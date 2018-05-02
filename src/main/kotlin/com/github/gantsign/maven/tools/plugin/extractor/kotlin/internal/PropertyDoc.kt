@@ -19,7 +19,7 @@
  */
 package com.github.gantsign.maven.tools.plugin.extractor.kotlin.internal
 
-data class PropertyDoc(
+internal data class PropertyDoc(
     val name: String,
     val comment: String?,
     val tags: Map<String, DocTag>
