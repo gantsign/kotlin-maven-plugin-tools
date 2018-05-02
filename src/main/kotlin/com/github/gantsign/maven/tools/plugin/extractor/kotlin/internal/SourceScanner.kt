@@ -211,19 +211,13 @@ internal class SourceScanner(
             }
         }
 
-        val javaClasses: MutableCollection<JavaClass> = builder.classes
-            ?.takeUnless(MutableCollection<JavaClass>::isEmpty)
-            ?: return emptyMap()
+        val javaClasses: MutableCollection<JavaClass> = builder.classes ?: return emptyMap()
 
         return javaClasses.associateBy { it.fullyQualifiedName!! }
     }
 
     private fun Artifact.fromProjectReferences(project: MavenProject): MavenProject? =
-        project.projectReferences
-            ?.takeUnless(MutableMap<String, MavenProject>::isEmpty)
-            ?.let { projectReferences ->
-                projectReferences.values.let { mavenProjects ->
-                    mavenProjects.firstOrNull { it.id == id }
-                }
-            }
+        project.projectReferences?.values?.let { mavenProjects ->
+            mavenProjects.firstOrNull { it.id == id }
+        }
 }
