@@ -336,14 +336,13 @@ class JavaAnnotationsMojoDescriptorExtractor : AbstractLogEnabled(), MojoDescrip
         // Build isolated Classloader with only the artifacts of the project (none of this plugin)
         val classLoader = URLClassLoader(
             artifacts.asSequence()
-                .map({
+                .mapNotNull({
                     try {
                         it.file.toURI().toURL()!!
                     } catch (e: MalformedURLException) {
                         null
                     }
                 })
-                .filterNotNull()
                 .toList()
                 .toTypedArray(),
             ClassLoader.getSystemClassLoader()
