@@ -17,9 +17,10 @@
  * limitations under the License.
  * #L%
  */
-File file = new File(basedir, "target/classes/META-INF/maven/plugin.xml");
+//noinspection GroovyAssignabilityCheck
+File file = new File(basedir, "target/classes/META-INF/maven/plugin.xml")
 if (!file.isFile()) {
-    throw new FileNotFoundException("Could not find generated plugin.xml: " + file);
+    throw new FileNotFoundException("Could not find generated plugin.xml: $file")
 }
 def expected = '''
 <?xml version="1.0" encoding="UTF-8"?>

@@ -6,8 +6,10 @@
     <list size="0" />
   </component>
   <component name="EntryPointsManager">
-    <list size="1">
-      <item index="0" class="java.lang.String" itemvalue="org.codehaus.plexus.component.annotations.Component" />
+    <list size="3">
+      <item index="0" class="java.lang.String" itemvalue="org.apache.maven.plugins.annotations.Component" />
+      <item index="1" class="java.lang.String" itemvalue="org.apache.maven.plugins.annotations.Parameter" />
+      <item index="2" class="java.lang.String" itemvalue="org.codehaus.plexus.component.annotations.Component" />
     </list>
   </component>
   <component name="MavenProjectsManager">
