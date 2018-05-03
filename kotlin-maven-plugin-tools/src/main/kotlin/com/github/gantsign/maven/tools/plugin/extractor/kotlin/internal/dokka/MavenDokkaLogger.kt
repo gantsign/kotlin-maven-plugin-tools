@@ -28,7 +28,8 @@ internal class MavenDokkaLogger(private val log: Logger) : DokkaLogger {
     }
 
     override fun info(message: String) {
-        log.info(message)
+        // Dokka logger has no debug level and info logging is too verbose
+        log.debug(message)
     }
 
     override fun warn(message: String) {

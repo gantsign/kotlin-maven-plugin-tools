@@ -26,11 +26,17 @@ import com.thoughtworks.qdox.library.SortedClassLibraryBuilder
 import com.thoughtworks.qdox.model.JavaClass
 import org.apache.maven.artifact.Artifact
 import org.apache.maven.tools.plugin.PluginToolsRequest
+import org.codehaus.plexus.logging.Logger
 import java.net.MalformedURLException
 import java.net.URLClassLoader
 import java.nio.file.Path
+import java.util.concurrent.TimeUnit.MILLISECONDS
+import java.util.concurrent.TimeUnit.SECONDS
 
-internal class QDoxSourceScanner(private val request: PluginToolsRequest) {
+internal class QDoxSourceScanner(
+    private val logger: Logger,
+    private val request: PluginToolsRequest
+) {
 
     fun scanSourceDoc(requests: List<SourceScanRequest>): Map<String, ClassDoc> {
         val encoding = request.encoding!!
@@ -55,12 +61,20 @@ internal class QDoxSourceScanner(private val request: PluginToolsRequest) {
     ): Map<String, ClassDoc> {
         val sourceDirectories = this
 
+        val classpath = artifacts.map { it.file!! }
+
+        logger.debug("Performing source scanning using QDox")
+        logger.debug("Sources: ${this.joinToString()}")
+        logger.debug("Classpath: ${classpath.joinToString()}")
+
+        val startScanMillis = System.currentTimeMillis()
+
         // Build isolated Classloader with only the artifacts of the project (none of this plugin)
         val classLoader = URLClassLoader(
-            artifacts.asSequence()
+            classpath.asSequence()
                 .mapNotNull({
                     try {
-                        it.file.toURI().toURL()!!
+                        it.toURI().toURL()!!
                     } catch (e: MalformedURLException) {
                         null
                     }
@@ -78,6 +92,9 @@ internal class QDoxSourceScanner(private val request: PluginToolsRequest) {
                 addSourceTree(dir.toFile())
             }
         }
+
+        val scanDurationMillis = System.currentTimeMillis() - startScanMillis
+        logger.debug("done in ${SECONDS.convert(scanDurationMillis, MILLISECONDS)} secs")
 
         val javaClasses: MutableCollection<JavaClass> = builder.classes ?: return emptyMap()
 

@@ -92,7 +92,7 @@ internal class SourceScanner(
         val dokkaSourcceScanner = DokkaSourceScanner(logger, request)
         val dokkaClassDoc = dokkaSourcceScanner.scanSourceDoc(sourceScanRequests)
 
-        val qDoxSourceScanner = QDoxSourceScanner(request)
+        val qDoxSourceScanner = QDoxSourceScanner(logger, request)
         val qDoxClassDoc = qDoxSourceScanner.scanSourceDoc(sourceScanRequests)
 
         // The Dokka scanner omits fields for Java classes so we overwrite the Dokka data for

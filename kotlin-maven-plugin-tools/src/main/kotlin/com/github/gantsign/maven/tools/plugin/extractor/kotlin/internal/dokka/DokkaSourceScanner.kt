@@ -38,20 +38,18 @@ import org.jetbrains.dokka.prepareForGeneration
 import org.jetbrains.kotlin.descriptors.DeclarationDescriptor
 import org.jetbrains.kotlin.utils.PathUtil
 import java.nio.file.Path
+import java.util.concurrent.TimeUnit.MILLISECONDS
+import java.util.concurrent.TimeUnit.SECONDS
 
 internal class DokkaSourceScanner private constructor(
-    private val request: PluginToolsRequest,
-    private val logger: DokkaLogger
+    private val logger: Logger,
+    private val dokkaLogger: DokkaLogger,
+    private val request: PluginToolsRequest
 ) {
     constructor(
         logger: Logger,
         request: PluginToolsRequest
-    ) : this(
-        request,
-        MavenDokkaLogger(
-            logger
-        )
-    )
+    ) : this(logger, MavenDokkaLogger(logger), request)
 
     private val includes: List<String> = emptyList()
 
@@ -87,12 +85,11 @@ internal class DokkaSourceScanner private constructor(
     private fun appendSourceModule(sourceScanRequest: SourceScanRequest) {
         val environment = sourceScanRequest.createAnalysisEnvironment()
 
-        logger.info("Module: ${request.project.artifactId}")
-        logger.info("Sources: ${sourceScanRequest.sourceDirectories.joinToString()}")
-        logger.info("Classpath: ${environment.classpath.joinToString()}")
+        logger.debug("Performing source scanning using Dokka")
+        logger.debug("Sources: ${sourceScanRequest.sourceDirectories.joinToString()}")
+        logger.debug("Classpath: ${environment.classpath.joinToString()}")
 
-        logger.info("Analysing sources and libraries... ")
-        val startAnalyse = System.currentTimeMillis()
+        val startScanMillis = System.currentTimeMillis()
 
         val injector = Guice.createInjector(
             DokkaAnalysisModule(
@@ -100,14 +97,14 @@ internal class DokkaSourceScanner private constructor(
                 options,
                 JvmPlatformProvider,
                 documentationModule.nodeRefGraph,
-                logger
+                dokkaLogger
             )
         )
 
         buildDocumentationModule(injector, documentationModule, { true }, includes)
 
-        val timeAnalyse = System.currentTimeMillis() - startAnalyse
-        logger.info("done in ${timeAnalyse / 1000} secs")
+        val scanDurationMillis = System.currentTimeMillis() - startScanMillis
+        logger.debug("done in ${SECONDS.convert(scanDurationMillis, MILLISECONDS)} secs")
 
         Disposer.dispose(environment)
     }
@@ -124,7 +121,7 @@ internal class DokkaSourceScanner private constructor(
         sourceDirectories: List<Path>,
         dependencies: Set<Artifact>
     ): AnalysisEnvironment {
-        val environment = AnalysisEnvironment(DokkaMessageCollector(logger))
+        val environment = AnalysisEnvironment(DokkaMessageCollector(dokkaLogger))
 
         environment.apply {
             addClasspath(PathUtil.getJdkClassesRootsFromCurrentJre())
