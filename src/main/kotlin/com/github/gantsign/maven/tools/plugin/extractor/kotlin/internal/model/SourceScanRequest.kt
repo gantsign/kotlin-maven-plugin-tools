@@ -17,17 +17,21 @@
  * limitations under the License.
  * #L%
  */
-package com.github.gantsign.maven.tools.plugin.extractor.kotlin.internal
+package com.github.gantsign.maven.tools.plugin.extractor.kotlin.internal.model
 
-internal data class ClassDoc(
-    val fullyQualifiedName: String,
-    val comment: String?,
-    val properties: List<PropertyDoc>,
-    val tags: Map<String, DocTag>
-) {
-    var superClassDoc: ClassDoc? = null
-        set(value) {
-            if (field != null) throw IllegalStateException("superClassDoc cannot be changed once set")
-            field = value
-        }
+import org.apache.maven.artifact.Artifact
+import org.apache.maven.project.MavenProject
+import java.nio.file.Path
+
+internal sealed class SourceScanRequest(open val sourceDirectories: List<Path>) {
+
+    data class ArtifactScanRequest(
+        val artifact: Artifact,
+        private val sourceDirectory: Path
+    ) : SourceScanRequest(listOf(sourceDirectory))
+
+    data class ProjectScanRequest(
+        val project: MavenProject,
+        override val sourceDirectories: List<Path>
+    ) : SourceScanRequest(sourceDirectories)
 }

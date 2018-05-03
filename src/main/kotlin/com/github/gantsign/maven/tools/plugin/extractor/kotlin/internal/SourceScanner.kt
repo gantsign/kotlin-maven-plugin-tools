@@ -19,8 +19,11 @@
  */
 package com.github.gantsign.maven.tools.plugin.extractor.kotlin.internal
 
-import com.github.gantsign.maven.tools.plugin.extractor.kotlin.internal.SourceScanRequest.ArtifactScanRequest
-import com.github.gantsign.maven.tools.plugin.extractor.kotlin.internal.SourceScanRequest.ProjectScanRequest
+import com.github.gantsign.maven.tools.plugin.extractor.kotlin.internal.model.ClassDoc
+import com.github.gantsign.maven.tools.plugin.extractor.kotlin.internal.model.SourceScanRequest
+import com.github.gantsign.maven.tools.plugin.extractor.kotlin.internal.model.SourceScanRequest.ArtifactScanRequest
+import com.github.gantsign.maven.tools.plugin.extractor.kotlin.internal.model.SourceScanRequest.ProjectScanRequest
+import com.github.gantsign.maven.tools.plugin.extractor.kotlin.internal.qdox.QDoxSourceScanner
 import org.apache.maven.artifact.Artifact
 import org.apache.maven.artifact.resolver.ArtifactNotFoundException
 import org.apache.maven.artifact.resolver.ArtifactResolutionException

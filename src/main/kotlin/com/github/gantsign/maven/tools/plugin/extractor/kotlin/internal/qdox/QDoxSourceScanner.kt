@@ -17,8 +17,12 @@
  * limitations under the License.
  * #L%
  */
-package com.github.gantsign.maven.tools.plugin.extractor.kotlin.internal
+package com.github.gantsign.maven.tools.plugin.extractor.kotlin.internal.qdox
 
+import com.github.gantsign.maven.tools.plugin.extractor.kotlin.internal.model.ClassDoc
+import com.github.gantsign.maven.tools.plugin.extractor.kotlin.internal.model.DocTag
+import com.github.gantsign.maven.tools.plugin.extractor.kotlin.internal.model.PropertyDoc
+import com.github.gantsign.maven.tools.plugin.extractor.kotlin.internal.model.SourceScanRequest
 import com.thoughtworks.qdox.JavaProjectBuilder
 import com.thoughtworks.qdox.library.SortedClassLibraryBuilder
 import com.thoughtworks.qdox.model.DocletTag
@@ -116,5 +120,9 @@ internal class QDoxSourceScanner(private val request: PluginToolsRequest) {
         }
 
     private fun List<DocletTag>.toDocTags(): Map<String, DocTag> =
-        associate { it.name to DocTag(it.value) }
+        associate {
+            it.name to DocTag(
+                it.value
+            )
+        }
 }

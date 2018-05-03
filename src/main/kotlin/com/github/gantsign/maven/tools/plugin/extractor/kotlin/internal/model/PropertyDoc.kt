@@ -17,6 +17,10 @@
  * limitations under the License.
  * #L%
  */
-package com.github.gantsign.maven.tools.plugin.extractor.kotlin.internal
+package com.github.gantsign.maven.tools.plugin.extractor.kotlin.internal.model
 
-internal data class DocTag(val value: String? = null)
+internal data class PropertyDoc(
+    val name: String,
+    val comment: String?,
+    val tags: Map<String, DocTag>
+)

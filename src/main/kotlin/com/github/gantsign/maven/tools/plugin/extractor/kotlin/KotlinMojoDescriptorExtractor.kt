@@ -20,10 +20,10 @@
 package com.github.gantsign.maven.tools.plugin.extractor.kotlin
 
 import com.github.gantsign.maven.tools.plugin.extractor.kotlin.internal.AnnotationScanner
-import com.github.gantsign.maven.tools.plugin.extractor.kotlin.internal.ClassDoc
-import com.github.gantsign.maven.tools.plugin.extractor.kotlin.internal.DocTag
-import com.github.gantsign.maven.tools.plugin.extractor.kotlin.internal.PropertyDoc
 import com.github.gantsign.maven.tools.plugin.extractor.kotlin.internal.SourceScanner
+import com.github.gantsign.maven.tools.plugin.extractor.kotlin.internal.model.ClassDoc
+import com.github.gantsign.maven.tools.plugin.extractor.kotlin.internal.model.DocTag
+import com.github.gantsign.maven.tools.plugin.extractor.kotlin.internal.model.PropertyDoc
 import org.apache.maven.plugin.descriptor.InvalidParameterException
 import org.apache.maven.plugin.descriptor.MojoDescriptor
 import org.apache.maven.plugin.descriptor.Parameter
