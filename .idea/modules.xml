@@ -2,7 +2,8 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/kotlin-maven-plugin-tools.iml" filepath="$PROJECT_DIR$/kotlin-maven-plugin-tools.iml" />
+      <module fileurl="file://$PROJECT_DIR$/kotlin-maven-plugin-tools/kotlin-maven-plugin-tools.iml" filepath="$PROJECT_DIR$/kotlin-maven-plugin-tools/kotlin-maven-plugin-tools.iml" />
+      <module fileurl="file://$PROJECT_DIR$/kotlin-maven-plugin-tools-parent.iml" filepath="$PROJECT_DIR$/kotlin-maven-plugin-tools-parent.iml" />
     </modules>
   </component>
 </project>
