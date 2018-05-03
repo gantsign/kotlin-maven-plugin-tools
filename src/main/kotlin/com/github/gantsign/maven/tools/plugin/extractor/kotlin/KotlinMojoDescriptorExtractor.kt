@@ -48,7 +48,7 @@ import org.codehaus.plexus.component.annotations.Requirement as PlexusRequiremen
  * KotlinDescriptorExtractor, a MojoDescriptor extractor to read descriptors from Kotlin.
  */
 @Component(role = MojoDescriptorExtractor::class, hint = "kotlin")
-class JavaAnnotationsMojoDescriptorExtractor : AbstractLogEnabled(), MojoDescriptorExtractor {
+class KotlinMojoDescriptorExtractor : AbstractLogEnabled(), MojoDescriptorExtractor {
 
     @PlexusRequirement
     private lateinit var mojoAnnotationsScanner: MojoAnnotationsScanner
