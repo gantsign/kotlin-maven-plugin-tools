@@ -89,8 +89,8 @@ internal class SourceScanner(
         val sourceScanRequests =
             scanRequestsForExternalSources + scanRequestsForReactorSources + scanRequestsForLocalSources
 
-        val dokkaSourcceScanner = DokkaSourceScanner(logger, request)
-        val dokkaClassDoc = dokkaSourcceScanner.scanSourceDoc(sourceScanRequests)
+        val dokkaSourceScanner = DokkaSourceScanner(logger, request)
+        val dokkaClassDoc = dokkaSourceScanner.scanSourceDoc(sourceScanRequests)
 
         val qDoxSourceScanner = QDoxSourceScanner(logger, request)
         val qDoxClassDoc = qDoxSourceScanner.scanSourceDoc(sourceScanRequests)
