@@ -20,14 +20,10 @@
 package com.github.gantsign.maven.tools.plugin.extractor.kotlin.internal.qdox
 
 import com.github.gantsign.maven.tools.plugin.extractor.kotlin.internal.model.ClassDoc
-import com.github.gantsign.maven.tools.plugin.extractor.kotlin.internal.model.DocTag
-import com.github.gantsign.maven.tools.plugin.extractor.kotlin.internal.model.PropertyDoc
 import com.github.gantsign.maven.tools.plugin.extractor.kotlin.internal.model.SourceScanRequest
 import com.thoughtworks.qdox.JavaProjectBuilder
 import com.thoughtworks.qdox.library.SortedClassLibraryBuilder
-import com.thoughtworks.qdox.model.DocletTag
 import com.thoughtworks.qdox.model.JavaClass
-import com.thoughtworks.qdox.model.JavaField
 import org.apache.maven.artifact.Artifact
 import org.apache.maven.tools.plugin.PluginToolsRequest
 import java.net.MalformedURLException
@@ -87,42 +83,4 @@ internal class QDoxSourceScanner(private val request: PluginToolsRequest) {
 
         return javaClasses.associateBy { it.fullyQualifiedName!! }.toClassDocMap()
     }
-
-    private fun Map<String, JavaClass>.toClassDocMap(): Map<String, ClassDoc> {
-        val classDocs = values.asSequence()
-            .map { javaClass ->
-                ClassDoc(
-                    fullyQualifiedName = javaClass.fullyQualifiedName,
-                    comment = javaClass.comment,
-                    properties = javaClass.fields.toPropertyDocs(),
-                    tags = javaClass.tags.toDocTags()
-                )
-            }
-            .associateBy(ClassDoc::fullyQualifiedName)
-
-        val superClassMapping = values
-            .associate { it.fullyQualifiedName!! to it.superJavaClass?.fullyQualifiedName!! }
-
-        for (classDoc in classDocs.values) {
-            classDoc.superClassDoc = classDocs[superClassMapping[classDoc.fullyQualifiedName]]
-        }
-
-        return classDocs
-    }
-
-    private fun List<JavaField>.toPropertyDocs(): List<PropertyDoc> =
-        map { javaField ->
-            PropertyDoc(
-                name = javaField.name,
-                comment = javaField.comment,
-                tags = javaField.tags.toDocTags()
-            )
-        }
-
-    private fun List<DocletTag>.toDocTags(): Map<String, DocTag> =
-        associate {
-            it.name to DocTag(
-                it.value
-            )
-        }
 }
