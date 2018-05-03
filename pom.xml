@@ -28,6 +28,7 @@
   <packaging>pom</packaging>
 
   <modules>
+    <module>dokka-fatjar</module>
     <module>kotlin-maven-plugin-tools</module>
   </modules>
 
@@ -93,6 +94,11 @@
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-resources-plugin</artifactId>
           <version>3.0.2</version>
+        </plugin>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-shade-plugin</artifactId>
+          <version>3.1.1</version>
         </plugin>
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
@@ -323,6 +329,8 @@
           <excludes>
             <!-- Exclude data classes -->
             <exclude>com/github/gantsign/maven/tools/plugin/extractor/kotlin/internal/model/**</exclude>
+            <!-- Simple delegation, not worth testing -->
+            <exclude>com/github/gantsign/maven/tools/plugin/extractor/kotlin/internal/dokka/MavenDokkaLogger.*</exclude>
           </excludes>
         </configuration>
         <executions>

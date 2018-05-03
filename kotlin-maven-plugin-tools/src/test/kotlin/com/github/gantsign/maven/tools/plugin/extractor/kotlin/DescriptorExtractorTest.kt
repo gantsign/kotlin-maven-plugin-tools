@@ -83,7 +83,10 @@ class DescriptorExtractorTest {
                 "jar"
             )
 
+            artifactId = "test"
+
             addCompileSourceRoot("src/test/java")
+            addCompileSourceRoot("src/test/kotlin")
         }
 
         val pluginToolsRequest = DefaultPluginToolsRequest(
@@ -98,7 +101,7 @@ class DescriptorExtractorTest {
         val mojoAnnotatedClasses: List<MojoDescriptor?> =
             assertNotNull(descriptorExtractor.execute(pluginToolsRequest))
 
-        assertThat(mojoAnnotatedClasses).isNotEmpty.hasSize(4)
+        assertThat(mojoAnnotatedClasses).isNotEmpty.hasSize(6)
         return mojoAnnotatedClasses
     }
 
@@ -460,6 +463,286 @@ class DescriptorExtractorTest {
             assertThat(alias).isNull()
             assertThat(isEditable).isFalse()
             assertThat(defaultValue).isEqualTo("\${project.build.finalName}")
+            assertThat(requirement).isNull()
+            assertThat(implementation).isNull()
+            assertThat(since).isNull()
+        }
+
+        assertNotNull(
+            parameterMap["additionalParameter"],
+            message = "Expected parameter with name 'additionalParameter'"
+        ).apply {
+            assertThat(type).isEqualTo("java.lang.String")
+            assertThat(name).isEqualTo("additionalParameter")
+            assertThat(isRequired).isFalse()
+            assertThat(description).isNull()
+            assertThat(expression).isEmpty()
+            assertThat(deprecated).isNull()
+            assertThat(alias).isNull()
+            assertThat(isEditable).isTrue()
+            assertThat(defaultValue).isNull()
+            assertThat(requirement).isNull()
+            assertThat(implementation).isNull()
+            assertThat(since).isNull()
+        }
+    }
+
+    @Test
+    fun readKotlinMojo() {
+        val mojoAnnotatedClasses: List<MojoDescriptor?> = parseMojos()
+
+        val mojoDescriptor: MojoDescriptor = assertNotNull(
+            mojoAnnotatedClasses.firstOrNull { it?.goal == "kotlin" },
+            message = "Expected 'kotlin' mojo"
+        ).apply {
+            assertThat(executionStrategy).isEqualTo(MojoDescriptor.MULTI_PASS_EXEC_STRATEGY)
+            assertThat(phase).isEqualTo(LifecyclePhase.COMPILE.id())
+            assertThat(since).isEqualTo("kotlinLocalVersion")
+            assertThat(executePhase).isEqualTo(LifecyclePhase.PACKAGE.id())
+            assertThat(executeGoal).isEqualTo("compiler")
+            assertThat(executeLifecycle).isEqualTo("kotlinLocalLifecycle")
+            assertThat(deprecated).isEqualTo("Kotlin local deprecated.")
+            assertThat(isAggregator).isTrue()
+            assertThat(dependencyResolutionRequired).isEqualTo(ResolutionScope.COMPILE.id())
+            assertThat(dependencyCollectionRequired).isEqualTo(ResolutionScope.RUNTIME.id())
+            assertThat(isProjectRequired).isFalse()
+            assertThat(isOnlineRequired).isTrue()
+            assertThat(pluginDescriptor).isSameAs(expectedPluginDescriptor)
+            assertThat(isInheritedByDefault).isFalse()
+            assertThat(isDirectInvocationOnly).isTrue()
+            assertThat(isRequiresReports).isTrue()
+            assertThat(isThreadSafe).isTrue()
+        }
+
+        val parameters: List<Parameter?> = assertNotNull(mojoDescriptor.parameters)
+        val parameterMap: Map<String, Parameter> = assertNotNull(mojoDescriptor.parameterMap)
+        assertThat(parameters).isNotEmpty.hasSize(5)
+
+        assertThat(parameterMap)
+            .isNotEmpty
+            .hasSize(5)
+            .isEqualTo(parameters.associateBy { it?.name })
+
+        assertNotNull(
+            parameterMap["minimalParameter"],
+            message = "Expected parameter with name 'minimalParameter'"
+        ).apply {
+            assertThat(type).isEqualTo("java.lang.String")
+            assertThat(name).isEqualTo("minimalParameter")
+            assertThat(isRequired).isFalse()
+            assertThat(description).isNull()
+            assertThat(expression).isEmpty()
+            assertThat(deprecated).isNull()
+            assertThat(alias).isNull()
+            assertThat(isEditable).isTrue()
+            assertThat(defaultValue).isNull()
+            assertThat(requirement).isNull()
+            assertThat(implementation).isNull()
+            assertThat(since).isNull()
+        }
+
+        assertNotNull(
+            parameterMap["everythingParameterName"],
+            message = "Expected parameter with name 'everythingParameterName'"
+        ).apply {
+            assertThat(type).isEqualTo("java.lang.String")
+            assertThat(name).isEqualTo("everythingParameterName")
+            assertThat(isRequired).isTrue()
+            assertThat(description).isEqualTo("Everything parameter description")
+            assertThat(expression).isEqualTo("\${everythingParameterProperty}")
+            assertThat(deprecated).isEqualTo("everything parameter deprecated message")
+            assertThat(alias).isEqualTo("everythingParameterAlias")
+            assertThat(isEditable).isFalse()
+            assertThat(defaultValue).isEqualTo("everythingParameterDefaultValue")
+            assertThat(requirement).isNull()
+            assertThat(implementation).isNull()
+            assertThat(since).isEqualTo("everythingParameterVersion")
+        }
+
+        assertNotNull(
+            parameterMap["minimalComponent"],
+            message = "Expected parameter with name 'minimalComponent'"
+        ).apply {
+            assertThat(type).isNull()
+            assertThat(name).isEqualTo("minimalComponent")
+            assertThat(isRequired).isFalse()
+            assertThat(description).isNull()
+            assertThat(expression).isNull()
+            assertThat(deprecated).isNull()
+            assertThat(alias).isNull()
+            assertThat(isEditable).isFalse()
+            assertThat(defaultValue).isNull()
+            assertThat(requirement).isNotNull
+            assertThat(requirement.role).isEqualTo("org.apache.maven.repository.RepositorySystem")
+            assertThat(requirement.roleHint).isEmpty()
+            assertThat(implementation).isNull()
+            assertThat(since).isNull()
+        }
+
+        assertNotNull(
+            parameterMap["everythingComponent"],
+            message = "Expected parameter with name 'everythingComponent'"
+        ).apply {
+            assertThat(type).isNull()
+            assertThat(name).isEqualTo("everythingComponent")
+            assertThat(isRequired).isFalse()
+            assertThat(description).isNull()
+            assertThat(expression).isNull()
+            assertThat(deprecated).isEqualTo("everything component deprecated message")
+            assertThat(alias).isNull()
+            assertThat(isEditable).isFalse()
+            assertThat(defaultValue).isNull()
+            assertThat(requirement).isNotNull
+            assertThat(requirement.role).isEqualTo("org.codehaus.plexus.compiler.manager.CompilerManager")
+            assertThat(requirement.roleHint).isEqualTo("everythingComponentHint")
+            assertThat(implementation).isNull()
+            assertThat(since).isEqualTo("everythingComponentVersion")
+        }
+
+        assertNotNull(
+            parameterMap["componentAsParameter"],
+            message = "Expected parameter with name 'componentAsParameter'"
+        ).apply {
+            assertThat(type).isEqualTo("org.apache.maven.plugin.MojoExecution")
+            assertThat(name).isEqualTo("componentAsParameter")
+            assertThat(isRequired).isFalse()
+            assertThat(description).isNull()
+            assertThat(expression).isEmpty()
+            assertThat(deprecated).isNull()
+            assertThat(alias).isNull()
+            assertThat(isEditable).isFalse()
+            assertThat(defaultValue).isEqualTo("\${mojoExecution}")
+            assertThat(requirement).isNull()
+            assertThat(implementation).isNull()
+            assertThat(since).isNull()
+        }
+    }
+
+    @Test
+    fun readKotlinExtendsLocalMojo() {
+        val mojoAnnotatedClasses: List<MojoDescriptor?> = parseMojos()
+
+        val mojoDescriptor: MojoDescriptor = assertNotNull(
+            mojoAnnotatedClasses.firstOrNull { it?.goal == "kotlinextendslocal" },
+            message = "Expected 'kotlinextendslocal' mojo"
+        ).apply {
+            assertThat(executionStrategy).isEqualTo(MojoDescriptor.MULTI_PASS_EXEC_STRATEGY)
+            assertThat(phase).isEqualTo(LifecyclePhase.COMPILE.id())
+            assertThat(since).isEqualTo("kotlinExtendsLocalVersion")
+            assertThat(executePhase).isEqualTo(LifecyclePhase.PACKAGE.id())
+            assertThat(executeGoal).isNull()
+            assertThat(executeLifecycle).isEqualTo("kotlinExtendsLocalLifecycle")
+            assertThat(deprecated).isEqualTo("Kotlin extends local deprecated.")
+            assertThat(isAggregator).isFalse()
+            assertThat(dependencyResolutionRequired).isEqualTo(ResolutionScope.COMPILE_PLUS_RUNTIME.id())
+            assertThat(dependencyCollectionRequired).isEqualTo(ResolutionScope.RUNTIME.id())
+            assertThat(isProjectRequired).isFalse()
+            assertThat(isOnlineRequired).isTrue()
+            assertThat(pluginDescriptor).isSameAs(expectedPluginDescriptor)
+            assertThat(isInheritedByDefault).isFalse()
+            assertThat(isDirectInvocationOnly).isTrue()
+            assertThat(isRequiresReports).isFalse()
+            assertThat(isThreadSafe).isTrue()
+        }
+
+        val parameters: List<Parameter?> = assertNotNull(mojoDescriptor.parameters)
+        val parameterMap: Map<String, Parameter> = assertNotNull(mojoDescriptor.parameterMap)
+        assertThat(parameters).isNotEmpty.hasSize(6)
+
+        assertThat(parameterMap)
+            .isNotEmpty
+            .hasSize(6)
+            .isEqualTo(parameters.associateBy { it?.name })
+
+        assertNotNull(
+            parameterMap["minimalParameter"],
+            message = "Expected parameter with name 'minimalParameter'"
+        ).apply {
+            assertThat(type).isEqualTo("java.lang.String")
+            assertThat(name).isEqualTo("minimalParameter")
+            assertThat(isRequired).isFalse()
+            assertThat(description).isNull()
+            assertThat(expression).isEmpty()
+            assertThat(deprecated).isNull()
+            assertThat(alias).isNull()
+            assertThat(isEditable).isTrue()
+            assertThat(defaultValue).isNull()
+            assertThat(requirement).isNull()
+            assertThat(implementation).isNull()
+            assertThat(since).isNull()
+        }
+
+        assertNotNull(
+            parameterMap["everythingParameterName"],
+            message = "Expected parameter with name 'everythingParameterName'"
+        ).apply {
+            assertThat(type).isEqualTo("java.lang.String")
+            assertThat(name).isEqualTo("everythingParameterName")
+            assertThat(isRequired).isFalse()
+            assertThat(description).isNull()
+            assertThat(expression).isEmpty()
+            assertThat(deprecated).isEqualTo("extends everything parameter deprecated message")
+            assertThat(alias).isEqualTo("extendsEverythingParameterAlias")
+            assertThat(isEditable).isTrue()
+            assertThat(defaultValue).isNull()
+            assertThat(requirement).isNull()
+            assertThat(implementation).isNull()
+            assertThat(since).isNull()
+        }
+
+        assertNotNull(
+            parameterMap["minimalComponent"],
+            message = "Expected parameter with name 'minimalComponent'"
+        ).apply {
+            assertThat(type).isNull()
+            assertThat(name).isEqualTo("minimalComponent")
+            assertThat(isRequired).isFalse()
+            assertThat(description).isNull()
+            assertThat(expression).isNull()
+            assertThat(deprecated).isNull()
+            assertThat(alias).isNull()
+            assertThat(isEditable).isFalse()
+            assertThat(defaultValue).isNull()
+            assertThat(requirement).isNotNull
+            assertThat(requirement.role).isEqualTo("org.apache.maven.repository.RepositorySystem")
+            assertThat(requirement.roleHint).isEmpty()
+            assertThat(implementation).isNull()
+            assertThat(since).isNull()
+        }
+
+        assertNotNull(
+            parameterMap["everythingComponent"],
+            message = "Expected parameter with name 'everythingComponent'"
+        ).apply {
+            assertThat(type).isNull()
+            assertThat(name).isEqualTo("everythingComponent")
+            assertThat(isRequired).isFalse()
+            assertThat(description).isNull()
+            assertThat(expression).isNull()
+            assertThat(deprecated).isEqualTo("extends everything component deprecated message")
+            assertThat(alias).isNull()
+            assertThat(isEditable).isFalse()
+            assertThat(defaultValue).isNull()
+            assertThat(requirement).isNotNull
+            assertThat(requirement.role).isEqualTo("org.codehaus.plexus.compiler.manager.CompilerManager")
+            assertThat(requirement.roleHint).isEqualTo("extendsEverythingComponentHint")
+            assertThat(implementation).isNull()
+            assertThat(since).isNull()
+        }
+
+        assertNotNull(
+            parameterMap["componentAsParameter"],
+            message = "Expected parameter with name 'componentAsParameter'"
+        ).apply {
+            assertThat(type).isEqualTo("org.apache.maven.plugin.MojoExecution")
+            assertThat(name).isEqualTo("componentAsParameter")
+            assertThat(isRequired).isFalse()
+            assertThat(description).isNull()
+            assertThat(expression).isEmpty()
+            assertThat(deprecated).isNull()
+            assertThat(alias).isNull()
+            assertThat(isEditable).isFalse()
+            assertThat(defaultValue).isEqualTo("\${mojoExecution}")
             assertThat(requirement).isNull()
             assertThat(implementation).isNull()
             assertThat(since).isNull()

@@ -10,6 +10,7 @@
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
+      <module name="dokka-fatjar" target="1.8" />
       <module name="kotlin-maven-plugin-tools" target="1.8" />
       <module name="kotlin-maven-plugin-tools-parent" target="1.8" />
     </bytecodeTargetLevel>

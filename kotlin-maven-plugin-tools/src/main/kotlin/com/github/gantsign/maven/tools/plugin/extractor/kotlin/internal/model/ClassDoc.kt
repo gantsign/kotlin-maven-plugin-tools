@@ -30,4 +30,13 @@ internal data class ClassDoc(
             if (field != null) throw IllegalStateException("superClassDoc cannot be changed once set")
             field = value
         }
+
+    override fun equals(other: Any?): Boolean {
+        if (other !is ClassDoc) {
+            return false
+        }
+        return fullyQualifiedName == other.fullyQualifiedName
+    }
+
+    override fun hashCode(): Int = fullyQualifiedName.hashCode()
 }
