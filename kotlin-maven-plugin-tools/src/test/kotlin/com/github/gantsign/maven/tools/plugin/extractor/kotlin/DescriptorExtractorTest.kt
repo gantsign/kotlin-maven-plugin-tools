@@ -36,7 +36,6 @@ import org.junit.Test
 import java.io.File
 import kotlin.test.assertNotNull
 
-
 class DescriptorExtractorTest {
 
     @Rule

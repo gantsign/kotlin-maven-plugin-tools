@@ -156,7 +156,11 @@ internal class SourceScanner(
             throw ExtractionException(e.message, e)
         } catch (e: ArtifactNotFoundException) {
             logger.debug("skip ArtifactNotFoundException: ${e.message}")
-            logger.warn("Unable to get sources artifact for ${artifact.groupId}:${artifact.artifactId}:${artifact.version}; javadoc tags (@since, @deprecated and comments) won't be available.")
+            logger.warn(
+                "Unable to get sources artifact for " +
+                    "${artifact.groupId}:${artifact.artifactId}:${artifact.version}; javadoc tags (@since, " +
+                    "@deprecated and comments) won't be available."
+            )
             return null
         } catch (e: NoSuchArchiverException) {
             throw ExtractionException(e.message, e)
@@ -171,8 +175,8 @@ internal class SourceScanner(
             .resolve(Paths.get("target", "generated-sources", "plugin"))
             .toAbsolutePath()!!
 
-        if (generatedPlugin.toString() !in compileSourceRoots
-            && Files.exists(generatedPlugin)
+        if (generatedPlugin.toString() !in compileSourceRoots &&
+            Files.exists(generatedPlugin)
         ) {
             sources += generatedPlugin
         }

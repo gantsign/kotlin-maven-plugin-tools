@@ -81,7 +81,6 @@ internal class DokkaSourceScanner private constructor(
         return documentationModule.toClassDocs()
     }
 
-
     private fun appendSourceModule(sourceScanRequest: SourceScanRequest) {
         val environment = sourceScanRequest.createAnalysisEnvironment()
 

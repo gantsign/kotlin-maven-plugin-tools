@@ -223,7 +223,6 @@ class KotlinMojoDescriptorExtractor : AbstractLogEnabled(), MojoDescriptorExtrac
             deprecated = mojo.deprecated
             isThreadSafe = mojo.threadSafe()
 
-
             mojoAnnotatedClass.findExecuteInClassHierarchy(mojoAnnotatedClasses)?.also { execute ->
                 executeGoal = execute.goal()
                 executeLifecycle = execute.lifecycle()
@@ -301,7 +300,11 @@ class KotlinMojoDescriptorExtractor : AbstractLogEnabled(), MojoDescriptorExtrac
                 )
             } else {
                 // not a component but a Maven object to be transformed into an expression/property: deprecated
-                logger.warn("Deprecated @Component annotation for '$name' property in ${mojoAnnotatedClass.className}: replace with @Parameter( defaultValue = \"$expression\", readonly = true )")
+                logger.warn(
+                    "Deprecated @Component annotation for '$name' property in " +
+                        "${mojoAnnotatedClass.className}: replace with @Parameter( defaultValue = \"$expression\", " +
+                        "readonly = true )"
+                )
                 defaultValue = expression
                 type = componentAnnotationContent.roleClassName
                 isRequired = true
