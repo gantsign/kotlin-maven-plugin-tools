@@ -28,17 +28,61 @@
     <relativePath>../pom.xml</relativePath>
   </parent>
 
+  <artifactId>dokka-embeddable</artifactId>
+
   <properties>
+    <enforcer.skip>true</enforcer.skip>
     <mdep.analyze.skip>true</mdep.analyze.skip>
   </properties>
 
-  <artifactId>dokka-embeddable</artifactId>
-
   <dependencies>
+    <dependency>
+      <groupId>com.github.spullara.cli-parser</groupId>
+      <artifactId>cli-parser</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>com.google.inject</groupId>
+      <artifactId>guice</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>com.landawn</groupId>
+      <artifactId>streamex</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>io.javaslang</groupId>
+      <artifactId>javaslang</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>log4j</groupId>
+      <artifactId>log4j</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>net.java.dev.jna</groupId>
+      <artifactId>jna</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.fusesource.jansi</groupId>
+      <artifactId>jansi</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.iq80.snappy</groupId>
+      <artifactId>snappy</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.jetbrains</groupId>
+      <artifactId>annotations</artifactId>
+    </dependency>
     <dependency>
       <groupId>org.jetbrains.dokka</groupId>
       <artifactId>dokka-fatjar</artifactId>
-      <version>0.9.16</version>
+    </dependency>
+    <dependency>
+      <groupId>org.jline</groupId>
+      <artifactId>jline</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.jsoup</groupId>
+      <artifactId>jsoup</artifactId>
     </dependency>
   </dependencies>
 
@@ -49,22 +93,98 @@
         <artifactId>maven-shade-plugin</artifactId>
         <version>3.1.1</version>
         <configuration>
+          <artifactSet>
+            <includes>
+              <include>org.jetbrains.dokka:dokka-fatjar</include>
+            </includes>
+          </artifactSet>
+          <relocations>
+            <relocation>
+              <!-- Guava often breaks backwards compatibility -->
+              <pattern>com.google.common</pattern>
+              <shadedPattern>org.jetbrains.kotlin.com.google.common</shadedPattern>
+            </relocation>
+            <relocation>
+              <pattern>com.google.gwt</pattern>
+              <shadedPattern>org.jetbrains.kotlin.com.google.gwt</shadedPattern>
+            </relocation>
+            <relocation>
+              <!-- IntelliJ using their own fork https://github.com/JetBrains/intellij-deps-trove4j -->
+              <pattern>gnu.trove</pattern>
+              <shadedPattern>org.jetbrains.kotlin.gnu.trove</shadedPattern>
+            </relocation>
+            <relocation>
+              <!-- requires JDOM < 2 -->
+              <pattern>org.jdom</pattern>
+              <shadedPattern>org.jetbrains.kotlin.org.jdom</shadedPattern>
+            </relocation>
+            <relocation>
+              <!-- requires picocontainer < 2 -->
+              <pattern>org.picocontainer</pattern>
+              <shadedPattern>org.jetbrains.kotlin.org.picocontainer</shadedPattern>
+            </relocation>
+            <relocation>
+              <!-- not available from standard repositories -->
+              <pattern>ru.yole.jkid</pattern>
+              <shadedPattern>org.jetbrains.kotlin.ru.yole.jkid</shadedPattern>
+            </relocation>
+          </relocations>
           <filters>
             <filter>
               <artifact>org.jetbrains.dokka:dokka-fatjar</artifact>
               <excludes>
+                <!-- com.google.inject:guice & dependencies -->
                 <!-- The version of ASM with Dokka was conflicting with the version used by maven-plugin-annotations -->
+                <exclude>com/google/inject/**</exclude>
+                <exclude>javax/inject/**</exclude>
+                <exclude>org/aopalliance/**</exclude>
+                <exclude>net/sf/cglib/**</exclude>
                 <exclude>org/objectweb/asm/**</exclude>
+
+                <!-- com.github.spullara.cli-parser -->
+                <exclude>com/sampullara/cli/**</exclude>
+
+                <!-- net.java.dev.jna -->
+                <exclude>com/sun/jna/**</exclude>
+
+                <!-- io.javaslang:javaslang -->
+                <exclude>javaslang/**</exclude>
+
+                <!-- com.landawn:streamex -->
+                <exclude>one/util/streamex/**</exclude>
+
+                <!-- log4j:log4j -->
+                <exclude>org/apache/log4j/**</exclude>
+
+                <!-- XML parser provided by JRE -->
+                <exclude>org/apache/xerces/impl/**</exclude>
+
+                <!-- org.fusesource.jansi:jansi -->
+                <exclude>org/fusesource/jansi/**</exclude>
+                <exclude>org/fusesource/hawtjni/runtime/**</exclude>
+
+                <!-- org.iq80.snappy:snappy -->
+                <exclude>org/iq80/snappy/**</exclude>
+
+                <!-- org.jetbrains:annotations -->
+                <exclude>org/intellij/lang/annotations/**</exclude>
+                <exclude>org/jetbrains/annotations/**</exclude>
+
+                <!-- org.jline:jline -->
+                <exclude>org/jline/**</exclude>
+
+                <!-- org.jsoup:jsoup -->
+                <exclude>org/jsoup/**</exclude>
               </excludes>
             </filter>
           </filters>
         </configuration>
         <executions>
           <execution>
-            <phase>package</phase>
             <goals>
               <goal>shade</goal>
             </goals>
+            <phase>package</phase>
           </execution>
         </executions>
       </plugin>
