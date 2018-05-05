@@ -7,9 +7,9 @@
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
-# 
+#
 #      http://www.apache.org/licenses/LICENSE-2.0
-# 
+#
 # Unless required by applicable law or agreed to in writing, software
 # distributed under the License is distributed on an "AS IS" BASIS,
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -33,9 +33,16 @@ cache:
 
 install: true
 script:
-  - ./mvnw clean install -s settings.xml
+  - .travis/build.sh
 
 branches:
   only:
     - master
     - /^(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)([\.\-].*)?$/
+
+env:
+  global:
+    # BINTRAY_USER
+    - secure: Gf/7VqgMMkpQpS2kloOEwhHG+ZfXlW+bQk2WUp5/G7HMSdWo+gsYH0Ub5tQyPofw0gS37m+heW+h1+0wVcFkwEM7xaeUvITxEfvZ3PjWL05XcCboSR+vXd7kybswfdLUpehiWymLYf2VhBldcUicN4RXcUI5mNlRfmPaPiNidi64chpWBXRNJ2KlfmpwGRI4MaHwvTdhApgDx9YYgSI1pbGNkZRMH3x/gECT0AfigSv3sDTY5kDqlUjrZSKdpxfwJ1vE8XBx0Imrw+3TzeXCmU1Uek2Qp+5sktk434gpYYj4lhYSJ0C1c6IVmBtqd1tm7K/aYItXowKUldO/owHCz4EVA2hyBCsYbqYIN6luF3JT9W12kZ2CCcYR5NxDfVCCNd8zedP4Mu4PugCAYS15CcO2sY0ANFcsydJoLVuKE/H/wNP97DPhYNr07+U6VSIMiNzPb2qjLsl4cTsbyFLMny1w5LVwWt0vbKUVv3s9hgRaFxnU5eFT0iggXpfvcNSwKPxufqkt3NZ7J1tBsOGgtMzDbmBR90slzMQxAqg3sDkfv6Yn6xzuvEWsuf18LpIP9n6dIIO7bo5lNlul2B05AQEH4bxtudTSc2DGPpnVt9ND+J6qRDObcSvNVJY4sgKvCHLN8vfCWGh/bwTFk0HOlnlSG6XlWbAmezP0aQw3idw=
+    # BINTRAY_API_KEY
+    - secure: HFz6aS67S9waxDo8C2121SFTqnWHOjeixYoYPsIrG8XT1Vl7/E82niE4sqf3CiU1h+3TqjEotpu2ZcD73FitxJ1st9vn5qY+z8iMhACDGSuo2q0E8nrpHltkdWtwykhWuvHa/StdrI2Xls9//1+4BklSCWwkYtBR0lzb2Tg585TbexlrbrB9/c5i/Goba89bXvizJm8jf9vcH7ktM8Jq7O8lcLlrDY7W7dNJ4Dyhfd36KyqZJJIRxaMaLQSeQ+qr54rnWoxA+nPbq4KaW0rfxBAx6mc760U63SgEHoUM6+aOW/+5Ee3a1pvPPBrRs7fZcM24Dq+Mb6JidjPiVne2horWaDmSKBa7HvaVXsd0AQXN0BXDTjEHXL6r8pSpXMOq98pdfL74O4UZfxCVrmW5DKQ8mTk9Qr9+zRkF5M+JpEySk7NHvxtFTCTXsXKiO/3pq2MtLN0kMgAaGTT8CIE5RKUyX4gyKQPXC9d8k1CuNrjB9K6DIB22Jqz5E3W7h5cC1VN6JkzeJOJaGw/c2NYflkMR9F1ct90vVLCp4WIGiqQUe1gRk1lyXKtnKg/eEUwL6XXn0YGfKmmbMUvkEuqmWpmpCHXh1J41/6aV29ejTa/H8jwQciNRxUVQdvsWObIuLQaducrFOUVoVmH0kqlMTPSoL11HonxgfGJ5uLPfvvg=
