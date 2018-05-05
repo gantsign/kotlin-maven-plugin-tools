@@ -753,4 +753,16 @@
     </developer>
   </developers>
 
+  <scm>
+    <connection>scm:git:https://github.com/gantsign/kotlin-maven-plugin-tools.git</connection>
+    <developerConnection>scm:git:git@github.com:gantsign/kotlin-maven-plugin-tools.git</developerConnection>
+    <url>https://github.com/gantsign/kotlin-maven-plugin-tools</url>
+    <tag>HEAD</tag>
+  </scm>
+
+  <issueManagement>
+    <system>GitHub</system>
+    <url>https://github.com/gantsign/kotlin-maven-plugin-tools/issues</url>
+  </issueManagement>
+
 </project>
