@@ -765,4 +765,9 @@
     <url>https://github.com/gantsign/kotlin-maven-plugin-tools/issues</url>
   </issueManagement>
 
+  <ciManagement>
+    <system>Travis CI</system>
+    <url>https://travis-ci.org/gantsign/kotlin-maven-plugin-tools</url>
+  </ciManagement>
+
 </project>
