@@ -32,7 +32,7 @@
     <mdep.analyze.skip>true</mdep.analyze.skip>
   </properties>
 
-  <artifactId>dokka-fatjar</artifactId>
+  <artifactId>dokka-embeddable</artifactId>
 
   <dependencies>
     <dependency>

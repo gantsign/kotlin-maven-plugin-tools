@@ -20,7 +20,7 @@
     </option>
     <option name="ignoredFiles">
       <set>
-        <option value="$PROJECT_DIR$/dokka-fatjar/pom.xml" />
+        <option value="$PROJECT_DIR$/dokka-embeddable/pom.xml" />
       </set>
     </option>
   </component>

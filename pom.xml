@@ -28,7 +28,7 @@
   <packaging>pom</packaging>
 
   <modules>
-    <module>dokka-fatjar</module>
+    <module>dokka-embeddable</module>
     <module>kotlin-maven-plugin-tools</module>
   </modules>
 
