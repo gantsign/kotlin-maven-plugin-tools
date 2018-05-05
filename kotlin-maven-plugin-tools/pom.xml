@@ -51,7 +51,6 @@
     <dependency>
       <groupId>com.thoughtworks.qdox</groupId>
       <artifactId>qdox</artifactId>
-      <version>2.0-M5</version>
     </dependency>
     <dependency>
       <groupId>org.apache.maven</groupId>
@@ -60,7 +59,6 @@
     <dependency>
       <groupId>org.apache.maven</groupId>
       <artifactId>maven-core</artifactId>
-      <version>${maven.version}</version>
     </dependency>
     <dependency>
       <groupId>org.apache.maven</groupId>
@@ -77,7 +75,6 @@
     <dependency>
       <groupId>org.apache.maven.plugin-tools</groupId>
       <artifactId>maven-plugin-tools-annotations</artifactId>
-      <version>${maven-plugin-tools.version}</version>
       <exclusions>
         <exclusion>
           <!-- provided by maven-core -->
@@ -94,7 +91,6 @@
     <dependency>
       <groupId>org.apache.maven.plugin-tools</groupId>
       <artifactId>maven-plugin-tools-api</artifactId>
-      <version>${maven-plugin-tools.version}</version>
       <exclusions>
         <exclusion>
           <!-- provided by maven-core -->
@@ -120,7 +116,6 @@
     <dependency>
       <groupId>org.codehaus.plexus</groupId>
       <artifactId>plexus-compiler-manager</artifactId>
-      <version>2.8.4</version>
     </dependency>
     <dependency>
       <groupId>org.codehaus.plexus</groupId>
@@ -129,7 +124,6 @@
     <dependency>
       <groupId>org.eclipse.sisu</groupId>
       <artifactId>org.eclipse.sisu.plexus</artifactId>
-      <version>0.3.3</version>
       <exclusions>
         <exclusion>
           <!-- provided by dokka-embeddable -->
@@ -146,13 +140,11 @@
     <dependency>
       <groupId>org.apache.maven</groupId>
       <artifactId>maven-compat</artifactId>
-      <version>${maven.version}</version>
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.apache.maven.plugin-testing</groupId>
       <artifactId>maven-plugin-testing-harness</artifactId>
-      <version>3.3.0</version>
       <scope>test</scope>
       <exclusions>
         <exclusion>
@@ -165,37 +157,31 @@
     <dependency>
       <groupId>org.apache.maven.plugins</groupId>
       <artifactId>maven-jar-plugin</artifactId>
-      <version>3.1.0</version>
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.apache.maven.resolver</groupId>
       <artifactId>maven-resolver-api</artifactId>
-      <version>${maven-resolver.version}</version>
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.apache.maven.resolver</groupId>
       <artifactId>maven-resolver-connector-basic</artifactId>
-      <version>${maven-resolver.version}</version>
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.apache.maven.resolver</groupId>
       <artifactId>maven-resolver-impl</artifactId>
-      <version>${maven-resolver.version}</version>
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.apache.maven.resolver</groupId>
       <artifactId>maven-resolver-transport-file</artifactId>
-      <version>${maven-resolver.version}</version>
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.apache.maven.resolver</groupId>
       <artifactId>maven-resolver-transport-http</artifactId>
-      <version>${maven-resolver.version}</version>
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -206,7 +192,6 @@
     <dependency>
       <groupId>org.jetbrains.kotlin</groupId>
       <artifactId>kotlin-test-junit</artifactId>
-      <version>${kotlin.version}</version>
       <scope>test</scope>
       <exclusions>
         <exclusion>
@@ -219,7 +204,6 @@
     <dependency>
       <groupId>org.slf4j</groupId>
       <artifactId>slf4j-simple</artifactId>
-      <version>1.7.25</version>
       <scope>test</scope>
     </dependency>
   </dependencies>
