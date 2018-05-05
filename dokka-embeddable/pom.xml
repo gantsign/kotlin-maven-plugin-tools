@@ -30,6 +30,9 @@
 
   <artifactId>dokka-embeddable</artifactId>
 
+  <name>Dokka Embeddable</name>
+  <description>Repackaged dokka-fatjar to make it suitable for embedded use.</description>
+
   <properties>
     <enforcer.skip>true</enforcer.skip>
     <mdep.analyze.skip>true</mdep.analyze.skip>

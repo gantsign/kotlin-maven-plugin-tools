@@ -27,6 +27,9 @@
 
   <packaging>pom</packaging>
 
+  <name>Kotlin Maven plugin Tools parent POM</name>
+  <description>POM with shared configuration for the Kotlin Maven Plugin Tools project.</description>
+
   <modules>
     <module>dokka-embeddable</module>
     <module>kotlin-maven-plugin-tools</module>
@@ -729,10 +732,25 @@
     </plugins>
   </reporting>
 
+  <url>https://github.com/gantsign/kotlin-maven-plugin-tools</url>
+
   <inceptionYear>2018</inceptionYear>
 
   <organization>
     <name>GantSign Ltd.</name>
   </organization>
+
+  <developers>
+    <developer>
+      <name>John Freeman</name>
+      <url>https://github.com/freemanjp</url>
+      <organization>GantSign Ltd.</organization>
+      <roles>
+        <role>architect</role>
+        <role>developer</role>
+      </roles>
+      <timezone>Europe/London</timezone>
+    </developer>
+  </developers>
 
 </project>

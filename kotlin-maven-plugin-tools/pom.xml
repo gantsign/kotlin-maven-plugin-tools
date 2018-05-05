@@ -30,6 +30,9 @@
 
   <artifactId>kotlin-maven-plugin-tools</artifactId>
 
+  <name>Kotlin Maven Plugin Tools</name>
+  <description>Extractor for plugins written in Kotlin.</description>
+
   <properties>
     <maven-resolver.version>1.1.1</maven-resolver.version>
   </properties>
@@ -244,5 +247,14 @@
       </plugin>
     </plugins>
   </build>
+
+  <licenses>
+    <license>
+      <name>Apache License, Version 2.0</name>
+      <url>https://opensource.org/licenses/Apache-2.0</url>
+      <distribution>repo</distribution>
+      <comments>A business-friendly OSS license</comments>
+    </license>
+  </licenses>
 
 </project>
