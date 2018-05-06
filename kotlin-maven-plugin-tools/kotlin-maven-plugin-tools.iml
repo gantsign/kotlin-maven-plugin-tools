@@ -30,7 +30,7 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" name="Maven: com.github.gantsign.maven.plugin-tools:dokka-embeddable:0.9.0-SNAPSHOT" level="project" />
+    <orderEntry type="library" name="Maven: com.github.gantsign.maven.plugin-tools:dokka-embeddable:0.9.2-SNAPSHOT" level="project" />
     <orderEntry type="library" name="Maven: com.github.spullara.cli-parser:cli-parser:1.1.2" level="project" />
     <orderEntry type="library" name="Maven: com.landawn:streamex:1.0.1" level="project" />
     <orderEntry type="library" name="Maven: io.javaslang:javaslang:2.0.6" level="project" />
@@ -75,7 +75,8 @@
     <orderEntry type="library" name="Maven: org.apache.maven.plugin-tools:maven-plugin-tools-api:3.5.1" level="project" />
     <orderEntry type="library" name="Maven: org.codehaus.plexus:plexus-archiver:3.5" level="project" />
     <orderEntry type="library" name="Maven: org.codehaus.plexus:plexus-io:3.0.0" level="project" />
-    <orderEntry type="library" name="Maven: org.apache.commons:commons-compress:1.14" level="project" />
+    <orderEntry type="library" name="Maven: org.apache.commons:commons-compress:1.16.1" level="project" />
+    <orderEntry type="library" name="Maven: org.objenesis:objenesis:2.6" level="project" />
     <orderEntry type="library" scope="RUNTIME" name="Maven: org.tukaani:xz:1.6" level="project" />
     <orderEntry type="library" name="Maven: org.codehaus.plexus:plexus-compiler-manager:2.8.4" level="project" />
     <orderEntry type="library" name="Maven: org.codehaus.plexus:plexus-compiler-api:2.8.4" level="project" />
