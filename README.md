@@ -1,6 +1,7 @@
 # Kotlin Maven Plugin Tools
 
 [![Build Status](https://travis-ci.org/gantsign/kotlin-maven-plugin-tools.svg?branch=master)](https://travis-ci.org/gantsign/kotlin-maven-plugin-tools)
+[![codecov](https://codecov.io/gh/gantsign/kotlin-maven-plugin-tools/branch/master/graph/badge.svg)](https://codecov.io/gh/gantsign/kotlin-maven-plugin-tools)
 
 Maven plugin metadata extractor for plugins written in Kotlin.
 
