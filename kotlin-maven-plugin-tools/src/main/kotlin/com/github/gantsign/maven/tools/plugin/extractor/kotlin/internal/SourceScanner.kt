@@ -169,7 +169,7 @@ internal class SourceScanner(
 
     private fun MavenProject.createScanRequest(): ProjectScanRequest {
         val compileSourceRoots: List<String> = compileSourceRoots!!
-        var sources = compileSourceRoots.map { Paths.get(it)!! }
+        val sources = compileSourceRoots.map { Paths.get(it)!! }.toMutableList()
 
         val generatedPlugin = basedir.toPath()
             .resolve(Paths.get("target", "generated-sources", "plugin"))
@@ -178,7 +178,7 @@ internal class SourceScanner(
         if (generatedPlugin.toString() !in compileSourceRoots &&
             Files.exists(generatedPlugin)
         ) {
-            sources += generatedPlugin
+            sources.add(generatedPlugin)
         }
 
         return ProjectScanRequest(this, sources)
