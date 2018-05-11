@@ -547,7 +547,16 @@ class DescriptorExtractorTest {
             assertThat(type).isEqualTo("java.lang.String")
             assertThat(name).isEqualTo("everythingParameterName")
             assertThat(isRequired).isTrue()
-            assertThat(description).isEqualTo("Everything parameter description")
+            assertThat(description).isEqualTo(
+                """
+                Everything parameter description.<br/>
+                Paragraph 2.<br/>
+                This is a <a href="https://example.com">link</a>.<br/>
+                This is <em>text with emphasis</em>.<br/>
+                This is <strong>strong text</strong>.<br/>
+                This is <code>inline code</code>.
+                """.trimIndent()
+            )
             assertThat(expression).isEqualTo("\${everythingParameterProperty}")
             assertThat(deprecated).isEqualTo("everything parameter deprecated message")
             assertThat(alias).isEqualTo("everythingParameterAlias")

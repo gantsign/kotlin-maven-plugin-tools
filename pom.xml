@@ -652,7 +652,7 @@
             <configuration>
               <rules>
                 <rule>
-                  <element>CLASS</element>
+                  <element>SOURCEFILE</element>
                   <excludes>
                     <exclude>*Test</exclude>
                   </excludes>

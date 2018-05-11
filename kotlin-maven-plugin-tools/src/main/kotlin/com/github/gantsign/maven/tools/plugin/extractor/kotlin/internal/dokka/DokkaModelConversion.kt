@@ -7,9 +7,9 @@
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -24,8 +24,6 @@ import com.github.gantsign.maven.tools.plugin.extractor.kotlin.internal.model.Do
 import com.github.gantsign.maven.tools.plugin.extractor.kotlin.internal.model.PropertyDoc
 import com.intellij.openapi.util.text.StringUtil
 import org.jetbrains.dokka.ContentNode
-import org.jetbrains.dokka.ContentParagraph
-import org.jetbrains.dokka.ContentText
 import org.jetbrains.dokka.DocumentationModule
 import org.jetbrains.dokka.DocumentationNode
 import org.jetbrains.dokka.NodeKind
@@ -99,19 +97,13 @@ private fun DocumentationNode.deprecationTag(): DocTag? =
     }
 
 private fun Iterable<ContentNode>.asText(): String? {
-    val nodes = this.toMutableList()
-
-    while (nodes.isNotEmpty()) {
-        val node = nodes.removeAt(0)
-        when (node) {
-            is ContentText -> return node.text
-            is ContentParagraph -> nodes.addAll(0, node.children)
-            else -> {
-                // TODO handle other node types?
-            }
-        }
+    val content = toList()
+    if (content.isEmpty()) {
+        return null
     }
-    return null
+    val sb = HtmlStringBuilder()
+    sb.appendContent(content)
+    return sb.toString()
 }
 
 private fun DocumentationNode.description(): String? =
