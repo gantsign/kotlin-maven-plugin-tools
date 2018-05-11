@@ -63,7 +63,17 @@ open class KotlinMojo : AbstractMojo() {
     var minimalParameter: String? = null
 
     /**
-     * Everything parameter description
+     * Everything parameter description.
+     *
+     * Paragraph 2.
+     *
+     * This is a [link](https://example.com).
+     *
+     * This is *text with emphasis*.
+     *
+     * This is **strong text**.
+     *
+     * This is `inline code`.
      *
      * @since everythingParameterVersion
      */
