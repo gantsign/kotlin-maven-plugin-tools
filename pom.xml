@@ -36,7 +36,7 @@
   </modules>
 
   <properties>
-    <kotlin.version>1.2.41</kotlin.version>
+    <kotlin.version>1.2.61</kotlin.version>
     <maven-plugin-tools.version>3.5.2</maven-plugin-tools.version>
     <maven.compiler.source>1.8</maven.compiler.source>
     <maven.compiler.target>1.8</maven.compiler.target>
