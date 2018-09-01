@@ -450,6 +450,20 @@
         </executions>
       </plugin>
       <plugin>
+        <groupId>com.github.gantsign.maven</groupId>
+        <artifactId>ktlint-maven-plugin</artifactId>
+        <version>0.9.7</version>
+        <executions>
+          <execution>
+            <id>format-and-check</id>
+            <goals>
+              <goal>format</goal>
+              <goal>check</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
         <groupId>io.github.zlika</groupId>
         <artifactId>reproducible-build-maven-plugin</artifactId>
         <version>0.7</version>

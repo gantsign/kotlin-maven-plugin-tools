@@ -84,7 +84,6 @@ internal class HtmlStringBuilder {
         if (newlineAfterClose) to.appendln()
     }
 
-
     private fun appendLinkIfNotThisPage(href: String, content: ContentBlock) {
         if (href == ".") {
             appendContent(content.children)
