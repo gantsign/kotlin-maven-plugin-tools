@@ -12,12 +12,4 @@
     </server>
   </servers>
 
-  <mirrors>
-    <mirror>
-      <id>jcenter</id>
-      <name>JCenter</name>
-      <url>http://jcenter.bintray.com</url>
-      <mirrorOf>central</mirrorOf>
-    </mirror>
-  </mirrors>
 </settings>

@@ -546,6 +546,14 @@
                 </bannedPlugins>
                 <requireNoRepositories>
                   <message>Best Practice is to never define repositories in pom.xml (use a repository manager instead)</message>
+                  <allowedRepositories>
+                    <!-- for dokka-fatjar -->
+                    <repository>jcenter</repository>
+                  </allowedRepositories>
+                  <allowedPluginRepositories>
+                    <!-- for dokka-maven-plugin -->
+                    <repository>jcenter</repository>
+                  </allowedPluginRepositories>
                 </requireNoRepositories>
                 <banDuplicateClasses>
                   <findAllDuplicates>true</findAllDuplicates>
@@ -801,6 +809,27 @@
     <system>Travis CI</system>
     <url>https://travis-ci.org/gantsign/kotlin-maven-plugin-tools</url>
   </ciManagement>
+
+  <repositories>
+    <repository>
+      <snapshots>
+        <enabled>false</enabled>
+      </snapshots>
+      <id>jcenter</id>
+      <name>JCenter</name>
+      <url>http://jcenter.bintray.com</url>
+    </repository>
+  </repositories>
+  <pluginRepositories>
+    <pluginRepository>
+      <snapshots>
+        <enabled>false</enabled>
+      </snapshots>
+      <id>jcenter</id>
+      <name>JCenter</name>
+      <url>https://jcenter.bintray.com/</url>
+    </pluginRepository>
+  </pluginRepositories>
 
   <distributionManagement>
     <repository>
