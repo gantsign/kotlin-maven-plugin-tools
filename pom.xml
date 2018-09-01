@@ -36,6 +36,7 @@
   </modules>
 
   <properties>
+    <dokka.version>0.9.17</dokka.version>
     <kotlin.version>1.2.41</kotlin.version>
     <maven-plugin-tools.version>3.5.2</maven-plugin-tools.version>
     <maven.compiler.source>1.8</maven.compiler.source>
@@ -271,7 +272,7 @@
       <dependency>
         <groupId>org.jetbrains.dokka</groupId>
         <artifactId>dokka-fatjar</artifactId>
-        <version>0.9.17</version>
+        <version>${dokka.version}</version>
       </dependency>
       <dependency>
         <groupId>org.jetbrains.kotlin</groupId>
@@ -414,6 +415,11 @@
           <groupId>org.jacoco</groupId>
           <artifactId>jacoco-maven-plugin</artifactId>
           <version>0.8.2</version>
+        </plugin>
+        <plugin>
+          <groupId>org.jetbrains.dokka</groupId>
+          <artifactId>dokka-maven-plugin</artifactId>
+          <version>${dokka.version}</version>
         </plugin>
       </plugins>
     </pluginManagement>
@@ -836,6 +842,18 @@
                 <goals>
                   <goal>jar</goal>
                 </goals>
+              </execution>
+            </executions>
+          </plugin>
+          <plugin>
+            <groupId>org.jetbrains.dokka</groupId>
+            <artifactId>dokka-maven-plugin</artifactId>
+            <executions>
+              <execution>
+                <goals>
+                  <goal>javadocJar</goal>
+                </goals>
+                <phase>package</phase>
               </execution>
             </executions>
           </plugin>
