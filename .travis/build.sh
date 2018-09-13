@@ -13,7 +13,6 @@ if [ "$TRAVIS_PULL_REQUEST" == "false" ]; then
 
     if [ "$TRAVIS_TAG" != "" ]; then
         ./mvnw deploy -P publish-artifacts --batch-mode --show-version \
-            --settings .travis/settings.xml \
-            -Denforcer.skip=true
+            --settings .travis/settings.xml
     fi
 fi
