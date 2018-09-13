@@ -40,7 +40,7 @@ jobs:
 
     - stage: Deploy
       script: .travis/deploy.sh
-      if: type = push AND (tag IS present OR branch = master)
+      if: type = push AND (tag IS present)
 
 after_success:
   - bash <(curl -s https://codecov.io/bash)
