@@ -32,8 +32,15 @@ cache:
     - $HOME/.m2
 
 install: true
-script:
-  - .travis/build.sh
+
+jobs:
+  include:
+    - stage: Test
+      script: .travis/test.sh
+
+    - stage: Deploy
+      script: .travis/deploy.sh
+      if: type = push AND (tag IS present OR branch = master)
 
 after_success:
   - bash <(curl -s https://codecov.io/bash)
