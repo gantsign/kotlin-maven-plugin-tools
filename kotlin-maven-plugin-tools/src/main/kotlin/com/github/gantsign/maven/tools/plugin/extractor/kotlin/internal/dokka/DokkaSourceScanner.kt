@@ -67,7 +67,8 @@ internal class DokkaSourceScanner private constructor(
         noStdlibLink = false,
         cacheRoot = null,
         languageVersion = null,
-        apiVersion = null
+        apiVersion = null,
+        includeNonPublic = true
     )
 
     private val documentationModule = DocumentationModule(request.project.artifactId!!)
