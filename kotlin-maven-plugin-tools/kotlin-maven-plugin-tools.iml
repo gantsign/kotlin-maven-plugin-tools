@@ -30,7 +30,7 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" name="Maven: com.github.gantsign.maven.plugin-tools:dokka-embeddable:0.9.6-SNAPSHOT" level="project" />
+    <orderEntry type="library" name="Maven: com.github.gantsign.maven.plugin-tools:dokka-embeddable:0.9.9-SNAPSHOT" level="project" />
     <orderEntry type="library" name="Maven: com.github.spullara.cli-parser:cli-parser:1.1.2" level="project" />
     <orderEntry type="library" name="Maven: com.landawn:streamex:1.0.1" level="project" />
     <orderEntry type="library" name="Maven: io.javaslang:javaslang:2.0.6" level="project" />
@@ -40,7 +40,7 @@
     <orderEntry type="library" name="Maven: org.iq80.snappy:snappy:0.4" level="project" />
     <orderEntry type="library" name="Maven: org.jline:jline:3.9.0" level="project" />
     <orderEntry type="library" name="Maven: org.jsoup:jsoup:1.11.3" level="project" />
-    <orderEntry type="library" name="Maven: com.google.inject:guice:4.2.0" level="project" />
+    <orderEntry type="library" name="Maven: com.google.inject:guice:4.2.1" level="project" />
     <orderEntry type="library" name="Maven: javax.inject:javax.inject:1" level="project" />
     <orderEntry type="library" name="Maven: aopalliance:aopalliance:1.0" level="project" />
     <orderEntry type="library" name="Maven: com.google.guava:guava:26.0-jre" level="project" />
@@ -83,7 +83,7 @@
     <orderEntry type="library" name="Maven: org.eclipse.sisu:org.eclipse.sisu.plexus:0.3.3" level="project" />
     <orderEntry type="library" name="Maven: javax.enterprise:cdi-api:1.0" level="project" />
     <orderEntry type="library" name="Maven: javax.annotation:jsr250-api:1.0" level="project" />
-    <orderEntry type="library" name="Maven: org.jetbrains:annotations:16.0.2" level="project" />
+    <orderEntry type="library" name="Maven: org.jetbrains:annotations:16.0.3" level="project" />
     <orderEntry type="library" scope="RUNTIME" name="Maven: org.slf4j:log4j-over-slf4j:1.7.25" level="project" />
     <orderEntry type="library" scope="RUNTIME" name="Maven: org.slf4j:slf4j-api:1.7.25" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: junit:junit:4.12" level="project" />
