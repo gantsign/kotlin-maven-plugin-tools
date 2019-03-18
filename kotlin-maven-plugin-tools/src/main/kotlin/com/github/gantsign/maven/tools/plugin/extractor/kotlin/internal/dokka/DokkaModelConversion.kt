@@ -34,7 +34,14 @@ internal fun DocumentationModule.toClassDocs(): Map<String, ClassDoc> {
 
     val superClassMap = packages
         .flatMap { it.members(NodeKind.Class) }
-        .associate { it.qualifiedName() to it.detailOrNull(NodeKind.Supertype)?.links?.firstOrNull()?.qualifiedName() }
+        .associate {
+            val className = it.qualifiedName()
+
+            val superClassName =
+                it.detailOrNull(NodeKind.Supertype)?.links?.firstOrNull()?.qualifiedName()
+
+            return@associate className to superClassName
+        }
 
     val classDocs = packages
         .flatMap { it.members(NodeKind.Class) }
