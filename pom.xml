@@ -36,7 +36,7 @@
   </modules>
 
   <properties>
-    <dokka.version>0.9.17</dokka.version>
+    <dokka.version>0.9.18</dokka.version>
     <kotlin.version>1.2.41</kotlin.version>
     <maven-plugin-tools.version>3.5.2</maven-plugin-tools.version>
     <maven.compiler.source>1.8</maven.compiler.source>
