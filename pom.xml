@@ -457,7 +457,7 @@
       <plugin>
         <groupId>com.github.gantsign.maven</groupId>
         <artifactId>ktlint-maven-plugin</artifactId>
-        <version>0.9.22</version>
+        <version>0.9.23</version>
         <executions>
           <execution>
             <id>format-and-check</id>
