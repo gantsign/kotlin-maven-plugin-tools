@@ -23,7 +23,7 @@
 
   <groupId>com.github.gantsign.maven.plugin-tools</groupId>
   <artifactId>kotlin-maven-plugin-tools-parent</artifactId>
-  <version>0.9.16-SNAPSHOT</version>
+  <version>0.9.17-SNAPSHOT</version>
 
   <packaging>pom</packaging>
 
