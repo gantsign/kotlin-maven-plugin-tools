@@ -193,4 +193,19 @@
     </plugins>
   </build>
 
+  <licenses>
+    <license>
+      <name>Multiple Licenses</name>
+      <url>https://github.com/Kotlin/dokka</url>
+      <distribution>repo</distribution>
+      <comments>This artifact is a composite of multiple artifacts with different licenses</comments>
+    </license>
+  </licenses>
+
+  <developers>
+    <developer>
+      <name>Various developers</name>
+    </developer>
+  </developers>
+
 </project>
