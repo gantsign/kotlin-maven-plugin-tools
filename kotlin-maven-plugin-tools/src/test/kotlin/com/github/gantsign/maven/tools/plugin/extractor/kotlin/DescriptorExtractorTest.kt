@@ -48,7 +48,7 @@ class DescriptorExtractorTest {
         val descriptorExtractor =
             assertNotNull(mojoRule.container.lookup(MojoDescriptorExtractor::class.java, "kotlin"))
 
-        val mainMavenProject = mojoRule.readMavenProject(File("."))!!
+        mojoRule.readMavenProject(File("src/test/resources/"))!!
 
         val repositorySystem = mojoRule.lookup<RepositorySystem>(RepositorySystem::class.java)!!
 
@@ -57,16 +57,13 @@ class DescriptorExtractorTest {
 
         val jarPluginArtifact = localRepository.find(
             assertNotNull(
-                mainMavenProject.dependencies
-                    .firstOrNull { it?.artifactId == "maven-jar-plugin" }
-                    ?.let {
-                        repositorySystem.createArtifact(
-                            it.groupId,
-                            it.artifactId,
-                            it.version,
-                            it.type
-                        )
-                    })
+                repositorySystem.createArtifact(
+                    "org.apache.maven.plugins",
+                    "maven-jar-plugin",
+                    "3.1.2",
+                    "jar"
+                )
+            )
         )!!
 
         val project = MavenProjectStub().apply {
