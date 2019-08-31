@@ -24,14 +24,14 @@ import com.github.gantsign.maven.tools.plugin.extractor.kotlin.internal.model.So
 import com.thoughtworks.qdox.JavaProjectBuilder
 import com.thoughtworks.qdox.library.SortedClassLibraryBuilder
 import com.thoughtworks.qdox.model.JavaClass
-import org.apache.maven.artifact.Artifact
-import org.apache.maven.tools.plugin.PluginToolsRequest
-import org.codehaus.plexus.logging.Logger
 import java.net.MalformedURLException
 import java.net.URLClassLoader
 import java.nio.file.Path
 import java.util.concurrent.TimeUnit.MILLISECONDS
 import java.util.concurrent.TimeUnit.SECONDS
+import org.apache.maven.artifact.Artifact
+import org.apache.maven.tools.plugin.PluginToolsRequest
+import org.codehaus.plexus.logging.Logger
 
 internal class QDoxSourceScanner(
     private val logger: Logger,

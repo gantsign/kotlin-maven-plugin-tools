@@ -25,6 +25,10 @@ import com.github.gantsign.maven.tools.plugin.extractor.kotlin.internal.model.So
 import com.github.gantsign.maven.tools.plugin.extractor.kotlin.internal.model.SourceScanRequest.ArtifactScanRequest
 import com.github.gantsign.maven.tools.plugin.extractor.kotlin.internal.model.SourceScanRequest.ProjectScanRequest
 import com.github.gantsign.maven.tools.plugin.extractor.kotlin.internal.qdox.QDoxSourceScanner
+import java.io.File
+import java.io.IOException
+import java.nio.file.Files
+import java.nio.file.Paths
 import org.apache.maven.artifact.Artifact
 import org.apache.maven.artifact.resolver.ArtifactNotFoundException
 import org.apache.maven.artifact.resolver.ArtifactResolutionException
@@ -37,10 +41,6 @@ import org.apache.maven.tools.plugin.extractor.annotations.scanner.MojoAnnotated
 import org.codehaus.plexus.archiver.manager.ArchiverManager
 import org.codehaus.plexus.archiver.manager.NoSuchArchiverException
 import org.codehaus.plexus.logging.Logger
-import java.io.File
-import java.io.IOException
-import java.nio.file.Files
-import java.nio.file.Paths
 
 internal class SourceScanner(
     private val logger: Logger,

@@ -19,9 +19,9 @@
  */
 package com.github.gantsign.maven.tools.plugin.extractor.kotlin.internal.model
 
+import java.nio.file.Path
 import org.apache.maven.artifact.Artifact
 import org.apache.maven.project.MavenProject
-import java.nio.file.Path
 
 internal sealed class SourceScanRequest(open val sourceDirectories: List<Path>) {
 
