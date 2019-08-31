@@ -19,6 +19,8 @@
  */
 package com.github.gantsign.maven.tools.plugin.extractor.kotlin
 
+import java.io.File
+import kotlin.test.assertNotNull
 import org.apache.maven.model.Build
 import org.apache.maven.plugin.descriptor.MojoDescriptor
 import org.apache.maven.plugin.descriptor.Parameter
@@ -33,8 +35,6 @@ import org.apache.maven.tools.plugin.extractor.MojoDescriptorExtractor
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.Rule
 import org.junit.Test
-import java.io.File
-import kotlin.test.assertNotNull
 
 class DescriptorExtractorTest {
 

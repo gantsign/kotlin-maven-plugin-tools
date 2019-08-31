@@ -19,11 +19,11 @@
  */
 package com.github.gantsign.maven.tools.plugin.extractor.kotlin.internal
 
+import java.io.File
 import org.apache.maven.tools.plugin.PluginToolsRequest
 import org.apache.maven.tools.plugin.extractor.annotations.scanner.MojoAnnotatedClass
 import org.apache.maven.tools.plugin.extractor.annotations.scanner.MojoAnnotationsScanner
 import org.apache.maven.tools.plugin.extractor.annotations.scanner.MojoAnnotationsScannerRequest
-import java.io.File
 
 internal class AnnotationScanner(
     private val mojoAnnotationsScanner: MojoAnnotationsScanner

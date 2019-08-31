@@ -23,6 +23,9 @@ import com.github.gantsign.maven.tools.plugin.extractor.kotlin.internal.model.Cl
 import com.github.gantsign.maven.tools.plugin.extractor.kotlin.internal.model.SourceScanRequest
 import com.google.inject.Guice
 import com.intellij.openapi.util.Disposer
+import java.nio.file.Path
+import java.util.concurrent.TimeUnit.MILLISECONDS
+import java.util.concurrent.TimeUnit.SECONDS
 import org.apache.maven.artifact.Artifact
 import org.apache.maven.tools.plugin.PluginToolsRequest
 import org.codehaus.plexus.logging.Logger
@@ -37,9 +40,6 @@ import org.jetbrains.dokka.buildDocumentationModule
 import org.jetbrains.dokka.prepareForGeneration
 import org.jetbrains.kotlin.descriptors.DeclarationDescriptor
 import org.jetbrains.kotlin.utils.PathUtil
-import java.nio.file.Path
-import java.util.concurrent.TimeUnit.MILLISECONDS
-import java.util.concurrent.TimeUnit.SECONDS
 
 internal class DokkaSourceScanner private constructor(
     private val logger: Logger,

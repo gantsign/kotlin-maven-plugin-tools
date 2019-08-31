@@ -41,8 +41,8 @@ import org.apache.maven.tools.plugin.extractor.annotations.scanner.MojoAnnotatio
 import org.apache.maven.tools.plugin.util.PluginUtils
 import org.codehaus.plexus.archiver.manager.ArchiverManager
 import org.codehaus.plexus.component.annotations.Component
-import org.codehaus.plexus.logging.AbstractLogEnabled
 import org.codehaus.plexus.component.annotations.Requirement as PlexusRequirement
+import org.codehaus.plexus.logging.AbstractLogEnabled
 
 /**
  * KotlinDescriptorExtractor, a MojoDescriptor extractor to read descriptors from Kotlin.
