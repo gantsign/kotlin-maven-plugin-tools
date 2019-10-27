@@ -203,7 +203,7 @@ class KotlinMojoDescriptorExtractor : AbstractLogEnabled(), MojoDescriptorExtrac
 
             description = mojo.description
             since = mojo.since
-            mojo.deprecated = mojo.deprecated
+            deprecated = mojo.deprecated
 
             isProjectRequired = mojo.requiresProject()
 
@@ -220,7 +220,6 @@ class KotlinMojoDescriptorExtractor : AbstractLogEnabled(), MojoDescriptorExtrac
             dependencyCollectionRequired = mojo.requiresDependencyCollection().id()
 
             isDirectInvocationOnly = mojo.requiresDirectInvocation()
-            deprecated = mojo.deprecated
             isThreadSafe = mojo.threadSafe()
 
             mojoAnnotatedClass.findExecuteInClassHierarchy(mojoAnnotatedClasses)?.also { execute ->
