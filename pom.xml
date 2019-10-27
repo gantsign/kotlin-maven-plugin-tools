@@ -46,6 +46,7 @@
     <dokka.version>0.10.0</dokka.version>
     <maven-plugin-tools.version>3.5.2</maven-plugin-tools.version>
     <maven.version>3.5.4</maven.version>
+    <plexus-containers.version>2.1.0</plexus-containers.version>
   </properties>
 
   <dependencyManagement>
@@ -218,7 +219,7 @@
       <dependency>
         <groupId>org.codehaus.plexus</groupId>
         <artifactId>plexus-component-annotations</artifactId>
-        <version>2.1.0</version>
+        <version>${plexus-containers.version}</version>
       </dependency>
       <dependency>
         <groupId>org.codehaus.plexus</groupId>
@@ -405,7 +406,7 @@
       <plugin>
         <groupId>org.codehaus.plexus</groupId>
         <artifactId>plexus-component-metadata</artifactId>
-        <version>2.1.0</version>
+        <version>${plexus-containers.version}</version>
         <executions>
           <execution>
             <id>process-classes</id>
