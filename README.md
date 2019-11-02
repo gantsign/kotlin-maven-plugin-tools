@@ -91,10 +91,10 @@ Your POM will include the following:
   </prerequisites>
 
   <properties>
-    <kotlin.version>1.2.41</kotlin.version>
+    <kotlin.version>1.3.50</kotlin.version>
     <maven.compiler.source>1.8</maven.compiler.source>
     <maven.compiler.target>1.8</maven.compiler.target>
-    <maven.version>3.5.3</maven.version>
+    <maven.version>3.6.2</maven.version>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
   </properties>
@@ -118,7 +118,7 @@ Your POM will include the following:
     <dependency>
       <groupId>org.apache.maven.plugin-tools</groupId>
       <artifactId>maven-plugin-annotations</artifactId>
-      <version>3.5.1</version>
+      <version>3.6.0</version>
       <scope>provided</scope>
     </dependency>
     <dependency>
@@ -136,7 +136,7 @@ Your POM will include the following:
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-plugin-plugin</artifactId>
-        <version>3.5.1</version>
+        <version>3.6.0</version>
         <configuration>
           <extractors>
             <!--
