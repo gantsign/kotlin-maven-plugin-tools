@@ -47,6 +47,7 @@
     <maven-plugin-tools.version>3.5.2</maven-plugin-tools.version>
     <maven.version>3.5.4</maven.version>
     <plexus-containers.version>2.1.0</plexus-containers.version>
+    <sisu.version>0.3.4</sisu.version>
   </properties>
 
   <dependencyManagement>
@@ -233,8 +234,13 @@
       </dependency>
       <dependency>
         <groupId>org.eclipse.sisu</groupId>
+        <artifactId>org.eclipse.sisu.inject</artifactId>
+        <version>${sisu.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.eclipse.sisu</groupId>
         <artifactId>org.eclipse.sisu.plexus</artifactId>
-        <version>0.3.4</version>
+        <version>${sisu.version}</version>
       </dependency>
       <dependency>
         <groupId>org.fusesource.jansi</groupId>
