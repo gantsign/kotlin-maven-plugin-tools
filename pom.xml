@@ -504,7 +504,7 @@
       </snapshots>
       <id>jcenter</id>
       <name>JCenter</name>
-      <url>http://jcenter.bintray.com</url>
+      <url>https://jcenter.bintray.com</url>
     </repository>
   </repositories>
   <pluginRepositories>
