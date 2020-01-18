@@ -2,4 +2,4 @@
 
 set -e
 
-./mvnw install --settings .travis/settings.xml --batch-mode --show-version
+./mvnw install -Dinvoker.streamLogs=true --settings .travis/settings.xml --batch-mode --show-version
