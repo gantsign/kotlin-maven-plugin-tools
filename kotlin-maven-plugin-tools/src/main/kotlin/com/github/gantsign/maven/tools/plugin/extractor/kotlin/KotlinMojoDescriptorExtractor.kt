@@ -24,6 +24,8 @@ import com.github.gantsign.maven.tools.plugin.extractor.kotlin.internal.SourceSc
 import com.github.gantsign.maven.tools.plugin.extractor.kotlin.internal.model.ClassDoc
 import com.github.gantsign.maven.tools.plugin.extractor.kotlin.internal.model.DocTag
 import com.github.gantsign.maven.tools.plugin.extractor.kotlin.internal.model.PropertyDoc
+import javax.inject.Inject
+import javax.inject.Named
 import org.apache.maven.plugin.descriptor.InvalidParameterException
 import org.apache.maven.plugin.descriptor.MojoDescriptor
 import org.apache.maven.plugin.descriptor.Parameter
@@ -40,24 +42,17 @@ import org.apache.maven.tools.plugin.extractor.annotations.scanner.MojoAnnotated
 import org.apache.maven.tools.plugin.extractor.annotations.scanner.MojoAnnotationsScanner
 import org.apache.maven.tools.plugin.util.PluginUtils
 import org.codehaus.plexus.archiver.manager.ArchiverManager
-import org.codehaus.plexus.component.annotations.Component
-import org.codehaus.plexus.component.annotations.Requirement as PlexusRequirement
 import org.codehaus.plexus.logging.AbstractLogEnabled
 
 /**
  * KotlinDescriptorExtractor, a MojoDescriptor extractor to read descriptors from Kotlin.
  */
-@Component(role = MojoDescriptorExtractor::class, hint = "kotlin")
-class KotlinMojoDescriptorExtractor : AbstractLogEnabled(), MojoDescriptorExtractor {
-
-    @PlexusRequirement
-    private lateinit var mojoAnnotationsScanner: MojoAnnotationsScanner
-
-    @PlexusRequirement
-    private lateinit var repositorySystem: RepositorySystem
-
-    @PlexusRequirement
-    private lateinit var archiverManager: ArchiverManager
+@Named("kotlin")
+class KotlinMojoDescriptorExtractor @Inject constructor(
+    private val mojoAnnotationsScanner: MojoAnnotationsScanner,
+    private val repositorySystem: RepositorySystem,
+    private val archiverManager: ArchiverManager
+) : AbstractLogEnabled(), MojoDescriptorExtractor {
 
     override fun execute(request: PluginToolsRequest): List<MojoDescriptor> {
 

@@ -83,6 +83,11 @@
         <version>2.0.6</version>
       </dependency>
       <dependency>
+        <groupId>javax.inject</groupId>
+        <artifactId>javax.inject</artifactId>
+        <version>1</version>
+      </dependency>
+      <dependency>
         <groupId>log4j</groupId>
         <artifactId>log4j</artifactId>
         <version>1.2.17</version>
@@ -284,6 +289,11 @@
     <pluginManagement>
       <plugins>
         <plugin>
+          <groupId>org.eclipse.sisu</groupId>
+          <artifactId>sisu-maven-plugin</artifactId>
+          <version>${sisu.version}</version>
+        </plugin>
+        <plugin>
           <groupId>org.jetbrains.dokka</groupId>
           <artifactId>dokka-maven-plugin</artifactId>
           <version>${dokka.version}</version>
@@ -406,19 +416,6 @@
               <goal>update-file-header</goal>
             </goals>
             <phase>process-sources</phase>
-          </execution>
-        </executions>
-      </plugin>
-      <plugin>
-        <groupId>org.codehaus.plexus</groupId>
-        <artifactId>plexus-component-metadata</artifactId>
-        <version>${plexus-containers.version}</version>
-        <executions>
-          <execution>
-            <id>process-classes</id>
-            <goals>
-              <goal>generate-metadata</goal>
-            </goals>
           </execution>
         </executions>
       </plugin>
