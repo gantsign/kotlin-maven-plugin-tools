@@ -91,6 +91,10 @@
       <groupId>org.jsoup</groupId>
       <artifactId>jsoup</artifactId>
     </dependency>
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-api</artifactId>
+    </dependency>
   </dependencies>
 
   <build>
@@ -184,6 +188,9 @@
 
                 <!-- org.jsoup:jsoup -->
                 <exclude>org/jsoup/**</exclude>
+
+                <!-- org.slf4j:slf4j-api -->
+                <exclude>org/slf4j/**</exclude>
               </excludes>
             </filter>
           </filters>
