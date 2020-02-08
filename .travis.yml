@@ -18,8 +18,6 @@
 # #L%
 ###
 ---
-sudo: false
-
 dist: xenial
 
 language: java
