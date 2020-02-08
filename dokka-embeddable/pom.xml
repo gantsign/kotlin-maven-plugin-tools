@@ -44,6 +44,10 @@
       <artifactId>cli-parser</artifactId>
     </dependency>
     <dependency>
+      <groupId>com.google.code.gson</groupId>
+      <artifactId>gson</artifactId>
+    </dependency>
+    <dependency>
       <groupId>com.google.inject</groupId>
       <artifactId>guice</artifactId>
     </dependency>
@@ -142,6 +146,9 @@
                 <exclude>org/aopalliance/**</exclude>
                 <exclude>net/sf/cglib/**</exclude>
                 <exclude>org/objectweb/asm/**</exclude>
+
+                <!-- com.google.code.gson:gson -->
+                <exclude>com/google/gson/**</exclude>
 
                 <!-- com.github.spullara.cli-parser -->
                 <exclude>com/sampullara/cli/**</exclude>
