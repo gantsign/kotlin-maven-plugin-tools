@@ -43,7 +43,7 @@
   </modules>
 
   <properties>
-    <dokka.version>0.10.0</dokka.version>
+    <dokka.version>0.10.1</dokka.version>
     <maven-plugin-tools.version>3.5.2</maven-plugin-tools.version>
     <maven.version>3.5.4</maven.version>
     <plexus-containers.version>2.1.0</plexus-containers.version>
@@ -66,11 +66,6 @@
         <groupId>com.google.inject</groupId>
         <artifactId>guice</artifactId>
         <version>4.2.2</version>
-      </dependency>
-      <dependency>
-        <groupId>com.landawn</groupId>
-        <artifactId>streamex</artifactId>
-        <version>1.0.1</version>
       </dependency>
       <dependency>
         <groupId>com.thoughtworks.qdox</groupId>
@@ -106,6 +101,11 @@
         <groupId>net.sf.trove4j</groupId>
         <artifactId>trove4j</artifactId>
         <version>2.1.0</version>
+      </dependency>
+      <dependency>
+        <groupId>one.util</groupId>
+        <artifactId>streamex</artifactId>
+        <version>0.7.2</version>
       </dependency>
       <dependency>
         <groupId>org.apache.commons</groupId>
