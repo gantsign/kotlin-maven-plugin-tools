@@ -526,6 +526,11 @@
       <name>GitHub Packages</name>
       <url>https://maven.pkg.github.com/gantsign/kotlin-maven-plugin-tools</url>
     </repository>
+    <snapshotRepository>
+      <id>github</id>
+      <name>GitHub Packages</name>
+      <url>https://maven.pkg.github.com/gantsign/kotlin-maven-plugin-tools</url>
+    </snapshotRepository>
   </distributionManagement>
 
   <profiles>
