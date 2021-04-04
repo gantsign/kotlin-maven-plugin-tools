@@ -118,11 +118,13 @@ internal class SourceScanner(
                     classifier
                 )!!
 
-            repositorySystem.resolve(ArtifactResolutionRequest().apply {
-                this.artifact = sourcesArtifact
-                localRepository = request.local
-                remoteRepositories = request.remoteRepos
-            })
+            repositorySystem.resolve(
+                ArtifactResolutionRequest().apply {
+                    this.artifact = sourcesArtifact
+                    localRepository = request.local
+                    remoteRepositories = request.remoteRepos
+                }
+            )
 
             val sourcesArtifactFile = sourcesArtifact.file
                 ?.takeIf(File::exists)

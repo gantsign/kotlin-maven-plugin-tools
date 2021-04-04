@@ -31,10 +31,12 @@ internal class AnnotationScanner(
 
     fun scanAnnotations(request: PluginToolsRequest): Map<String, MojoAnnotatedClass> {
 
-        return mojoAnnotationsScanner.scan(MojoAnnotationsScannerRequest().apply {
-            classesDirectories = listOf(File(request.project.build.outputDirectory!!))
-            dependencies = request.dependencies!!
-            project = request.project!!
-        })
+        return mojoAnnotationsScanner.scan(
+            MojoAnnotationsScannerRequest().apply {
+                classesDirectories = listOf(File(request.project.build.outputDirectory!!))
+                dependencies = request.dependencies!!
+                project = request.project!!
+            }
+        )
     }
 }
