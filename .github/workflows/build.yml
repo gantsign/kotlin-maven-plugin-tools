@@ -1,0 +1,29 @@
+name: Build
+on:
+  push:
+    branches:
+      - master
+env:
+  JAVA_TOOL_OPTIONS: >-
+    -XX:TieredStopAtLevel=1
+    -XX:+UseParallelGC
+    -Dstyle.color=always
+    -Djansi.force=true
+
+jobs:
+  build:
+    name: Maven build
+    runs-on: ubuntu-18.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 2
+      - name: Set up JDK
+        uses: actions/setup-java@v1
+        with:
+          java-version: '1.8'
+      - name: Build with Maven
+        run: .github/scripts/build.sh
+      - name: Code coverage report
+        uses: codecov/codecov-action@v1

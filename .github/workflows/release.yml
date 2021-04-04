@@ -1,0 +1,58 @@
+name: Release
+on:
+  push:
+    tags:
+      - '*'
+env:
+  JAVA_TOOL_OPTIONS: >-
+    -XX:TieredStopAtLevel=1
+    -XX:+UseParallelGC
+    -Dstyle.color=always
+    -Djansi.force=true
+
+jobs:
+  build:
+    name: Maven build
+    runs-on: ubuntu-18.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 2
+      - name: Set up JDK
+        uses: actions/setup-java@v1
+        with:
+          java-version: '1.8'
+      - name: Build with Maven
+        run: .github/scripts/build.sh
+      - name: Code coverage report
+        uses: codecov/codecov-action@v1
+
+  deploy:
+    name: Maven deploy
+    runs-on: ubuntu-18.04
+    needs: build
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Set up JDK
+        uses: actions/setup-java@v1
+        with:
+          java-version: '1.8'
+      - name: Install GPG key
+        run: |-
+          gpg --batch --import-options import-show --import << EOF
+          ${{ secrets.GPG_KEY }}
+          EOF
+      - name: Deploy with Maven
+        run: .github/scripts/deploy.sh
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GPG_KEY_NAME: ${{ secrets.GPG_KEY_NAME }}
+          GPG_PASSPHRASE: ${{ secrets.GPG_PASSPHRASE }}
+      - name: Delete GPG secret key
+        if: ${{ always() }}
+        run: gpg --batch --yes --delete-secret-keys ${{ secrets.GPG_KEY_NAME }} || true
+      - name: Delete GPG public key
+        if: ${{ always() }}
+        run: gpg --batch --yes --delete-keys ${{ secrets.GPG_KEY_NAME }}
