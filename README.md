@@ -1,6 +1,6 @@
 # Kotlin Maven Plugin Tools
 
-[![Build Status](https://travis-ci.org/gantsign/kotlin-maven-plugin-tools.svg?branch=master)](https://travis-ci.org/gantsign/kotlin-maven-plugin-tools)
+[![Release](https://github.com/gantsign/kotlin-maven-plugin-tools/workflows/Build/badge.svg)](https://github.com/gantsign/kotlin-maven-plugin-tools/actions?query=workflow%3ABuild)
 [![codecov](https://codecov.io/gh/gantsign/kotlin-maven-plugin-tools/branch/master/graph/badge.svg)](https://codecov.io/gh/gantsign/kotlin-maven-plugin-tools)
 [![Known Vulnerabilities](https://snyk.io/test/github/gantsign/kotlin-maven-plugin-tools/badge.svg)](https://snyk.io/test/github/gantsign/kotlin-maven-plugin-tools)
 
@@ -204,9 +204,9 @@ Your POM will include the following:
   -->
   <pluginRepositories>
       <pluginRepository>
-          <id>bintray-gantsign-maven</id>
-          <name>bintray-plugins</name>
-          <url>https://dl.bintray.com/gantsign/maven</url>
+          <id>kotlin-maven-plugin-tools</id>
+          <name>GitHub Packages</name>
+          <url>https://maven.pkg.github.com/gantsign/kotlin-maven-plugin-tools</url>
           <snapshots>
             <enabled>false</enabled>
           </snapshots>

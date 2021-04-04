@@ -407,7 +407,7 @@
             <phase>process-sources</phase>
             <configuration>
               <roots>${basedir}</roots>
-              <includes>.editorconfig,.gitattributes,.travis.yml,pom.xml</includes>
+              <includes>.editorconfig,.gitattributes,pom.xml</includes>
               <extraExtensions>
                 <editorconfig>properties</editorconfig>
                 <gitattributes>properties</gitattributes>
@@ -495,8 +495,8 @@
   </issueManagement>
 
   <ciManagement>
-    <system>Travis CI</system>
-    <url>https://travis-ci.org/gantsign/kotlin-maven-plugin-tools</url>
+    <system>GitHub Actions</system>
+    <url>https://github.com/gantsign/kotlin-maven-plugin-tools/actions</url>
   </ciManagement>
 
   <repositories>
@@ -522,9 +522,9 @@
 
   <distributionManagement>
     <repository>
-      <id>bintray-gantsign-maven</id>
-      <name>gantsign-maven</name>
-      <url>https://dl.bintray.com/gantsign/maven</url>
+      <id>github</id>
+      <name>GitHub Packages</name>
+      <url>https://maven.pkg.github.com/gantsign/kotlin-maven-plugin-tools</url>
     </repository>
   </distributionManagement>
 
@@ -560,14 +560,6 @@
           </plugin>
         </plugins>
       </build>
-
-      <distributionManagement>
-        <repository>
-          <id>bintray-gantsign-maven</id>
-          <name>gantsign-maven</name>
-          <url>https://api.bintray.com/maven/gantsign/maven/kotlin-maven-plugin-tools/;publish=1</url>
-        </repository>
-      </distributionManagement>
     </profile>
 
   </profiles>
