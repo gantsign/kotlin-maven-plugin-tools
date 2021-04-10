@@ -45,7 +45,7 @@
   <properties>
     <dokka.version>0.10.1</dokka.version>
     <maven-plugin-tools.version>3.5.2</maven-plugin-tools.version>
-    <maven.version>3.5.4</maven.version>
+    <maven.version>3.8.1</maven.version>
     <plexus-containers.version>2.1.0</plexus-containers.version>
     <sisu.version>0.3.4</sisu.version>
   </properties>
