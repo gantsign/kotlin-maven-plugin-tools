@@ -25,7 +25,7 @@
     <groupId>com.github.gantsign.parent</groupId>
     <artifactId>kotlin-parent</artifactId>
     <version>2.5.0</version>
-    <relativePath />
+    <relativePath/>
   </parent>
 
   <groupId>com.github.gantsign.maven.plugin-tools</groupId>
@@ -45,7 +45,7 @@
   <properties>
     <dokka.version>0.10.1</dokka.version>
     <maven-plugin-tools.version>3.5.2</maven-plugin-tools.version>
-    <maven.version>3.5.4</maven.version>
+    <maven.version>3.6.0</maven.version>
     <plexus-containers.version>2.1.0</plexus-containers.version>
     <sisu.version>0.3.4</sisu.version>
   </properties>
@@ -65,7 +65,7 @@
       <dependency>
         <groupId>com.google.inject</groupId>
         <artifactId>guice</artifactId>
-        <version>4.2.3</version>
+        <version>5.0.0</version>
       </dependency>
       <dependency>
         <groupId>com.thoughtworks.qdox</groupId>
@@ -325,13 +325,13 @@
                   <version>[1.8,1.9)</version>
                 </requireJavaVersion>
                 <!-- When there are multiple versions of a dependency you have to choose which one to use. -->
-                <dependencyConvergence />
+                <dependencyConvergence/>
                 <requireReleaseDeps>
                   <message>No Snapshots Allowed!</message>
                   <onlyWhenRelease>true</onlyWhenRelease>
                 </requireReleaseDeps>
                 <!-- When there are multiple versions of a dependency you have to choose the maximum version. -->
-                <requireUpperBoundDeps />
+                <requireUpperBoundDeps/>
                 <requirePluginVersions>
                   <message>Best Practice is to always define plugin versions!</message>
                   <banLatest>true</banLatest>
