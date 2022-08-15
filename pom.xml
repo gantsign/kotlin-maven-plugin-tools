@@ -49,7 +49,7 @@
     <maven-dependency-plugin.version>3.3.0</maven-dependency-plugin.version>
     <maven-plugin-tools.version>3.6.4</maven-plugin-tools.version>
     <maven-resolver.version>1.8.2</maven-resolver.version>
-    <maven.version>3.5.4</maven.version>
+    <maven.version>3.8.6</maven.version>
     <plexus-containers.version>2.1.1</plexus-containers.version>
     <sisu.version>0.3.5</sisu.version>
     <slf4j.version>1.7.36</slf4j.version>
