@@ -546,11 +546,11 @@ class DescriptorExtractorTest {
             assertThat(isRequired).isTrue()
             assertThat(description).isEqualTo(
                 """
-                Everything parameter description.<br/>
-                Paragraph 2.<br/>
-                This is a <a href="https://example.com">link</a>.<br/>
-                This is <em>text with emphasis</em>.<br/>
-                This is <strong>strong text</strong>.<br/>
+                Everything parameter description.<br />
+                Paragraph 2.<br />
+                This is a <a href="https://example.com">link</a>.<br />
+                This is <em>text with emphasis</em>.<br />
+                This is <strong>strong text</strong>.<br />
                 This is <code>inline code</code>.
                 """.trimIndent()
             )

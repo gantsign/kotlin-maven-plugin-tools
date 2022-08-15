@@ -33,31 +33,7 @@
   <name>Kotlin Maven Plugin Tools</name>
   <description>Extractor for plugins written in Kotlin.</description>
 
-  <properties>
-    <maven-resolver.version>1.1.1</maven-resolver.version>
-  </properties>
-
   <dependencies>
-    <dependency>
-      <groupId>${project.groupId}</groupId>
-      <artifactId>dokka-embeddable</artifactId>
-      <version>${project.version}</version>
-      <exclusions>
-        <exclusion>
-          <groupId>org.jetbrains.dokka</groupId>
-          <artifactId>dokka-fatjar</artifactId>
-        </exclusion>
-        <exclusion>
-          <!-- provided by log4j-over-slf4j -->
-          <groupId>log4j</groupId>
-          <artifactId>log4j</artifactId>
-        </exclusion>
-      </exclusions>
-    </dependency>
-    <dependency>
-      <groupId>com.google.inject</groupId>
-      <artifactId>guice</artifactId>
-    </dependency>
     <dependency>
       <groupId>com.thoughtworks.qdox</groupId>
       <artifactId>qdox</artifactId>
@@ -147,9 +123,27 @@
       <artifactId>annotations</artifactId>
     </dependency>
     <dependency>
+      <groupId>org.jetbrains</groupId>
+      <artifactId>markdown-jvm</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.jetbrains.kotlin</groupId>
+      <artifactId>kotlin-compiler-embeddable</artifactId>
+    </dependency>
+    <dependency>
       <groupId>org.slf4j</groupId>
       <artifactId>log4j-over-slf4j</artifactId>
       <scope>runtime</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.google.inject</groupId>
+      <artifactId>guice</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>io.mockk</groupId>
+      <artifactId>mockk</artifactId>
+      <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>junit</groupId>
@@ -212,13 +206,6 @@
       <groupId>org.jetbrains.kotlin</groupId>
       <artifactId>kotlin-test-junit</artifactId>
       <scope>test</scope>
-      <exclusions>
-        <exclusion>
-          <!-- provided by dokka-embeddable -->
-          <groupId>org.jetbrains.kotlin</groupId>
-          <artifactId>kotlin-stdlib</artifactId>
-        </exclusion>
-      </exclusions>
     </dependency>
     <dependency>
       <groupId>org.slf4j</groupId>
@@ -232,9 +219,6 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-invoker-plugin</artifactId>
-        <configuration>
-          <settingsFile>src/it/settings.xml</settingsFile>
-        </configuration>
         <executions>
           <execution>
             <id>integration-test</id>
