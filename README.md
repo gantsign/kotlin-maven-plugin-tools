@@ -20,11 +20,10 @@ version information, is still extracted from the JavaDoc, and this doesn't work
 for Kotlin files; the generated web site and the command line help are far less
 useful without descriptions.
 
-This project provides a Kotlin metadata extractor using
-[Dokka](https://github.com/Kotlin/dokka) to give the same support for Kotlin
-files, as the Java5 annotation extractor does for Java files (including support
-for descriptions and since version information from KDoc, and deprecation
-messages from `@kotlin.Deprecated`).
+This project provides a Kotlin metadata extractor using the Kotlin compiler to
+give the same support for Kotlin files, as the Java5 annotation extractor does
+for Java files (including support for descriptions and since version
+information from KDoc, and deprecation messages from `@kotlin.Deprecated`).
 
 ## Writing a Maven Plugin in Kotlin
 
@@ -94,7 +93,7 @@ Your POM will include the following:
   </prerequisites>
 
   <properties>
-    <kotlin.version>1.3.50</kotlin.version>
+    <kotlin.version>1.6.21</kotlin.version>
     <maven.compiler.source>1.8</maven.compiler.source>
     <maven.compiler.target>1.8</maven.compiler.target>
     <maven.version>3.6.2</maven.version>
