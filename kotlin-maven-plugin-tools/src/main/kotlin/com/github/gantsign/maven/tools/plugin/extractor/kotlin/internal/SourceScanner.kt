@@ -19,7 +19,7 @@
  */
 package com.github.gantsign.maven.tools.plugin.extractor.kotlin.internal
 
-import com.github.gantsign.maven.tools.plugin.extractor.kotlin.internal.dokka.DokkaSourceScanner
+import com.github.gantsign.maven.tools.plugin.extractor.kotlin.internal.kotlinc.KotlinSourceScanner
 import com.github.gantsign.maven.tools.plugin.extractor.kotlin.internal.model.ClassDoc
 import com.github.gantsign.maven.tools.plugin.extractor.kotlin.internal.model.SourceScanRequest
 import com.github.gantsign.maven.tools.plugin.extractor.kotlin.internal.model.SourceScanRequest.ArtifactScanRequest
@@ -89,15 +89,13 @@ internal class SourceScanner(
         val sourceScanRequests =
             scanRequestsForExternalSources + scanRequestsForReactorSources + scanRequestsForLocalSources
 
-        val dokkaSourceScanner = DokkaSourceScanner(logger, request)
-        val dokkaClassDoc = dokkaSourceScanner.scanSourceDoc(sourceScanRequests)
+        val kotinSourceScanner = KotlinSourceScanner(logger)
+        val kotinClassDoc = kotinSourceScanner.scanSourceDoc(sourceScanRequests)
 
         val qDoxSourceScanner = QDoxSourceScanner(logger, request)
         val qDoxClassDoc = qDoxSourceScanner.scanSourceDoc(sourceScanRequests)
 
-        // The Dokka scanner omits fields for Java classes so we overwrite the Dokka data for
-        // Java classes with the data from QDox
-        return dokkaClassDoc + qDoxClassDoc
+        return kotinClassDoc + qDoxClassDoc
     }
 
     private fun MojoAnnotatedClass.isCandidate(): Boolean = hasAnnotations()
