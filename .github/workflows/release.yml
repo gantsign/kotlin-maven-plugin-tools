@@ -23,6 +23,7 @@ jobs:
         uses: actions/setup-java@v3
         with:
           java-version: '1.8'
+          distribution: 'temurin'
       - name: Build with Maven
         run: .github/scripts/build.sh
       - name: Code coverage report
@@ -39,6 +40,7 @@ jobs:
         uses: actions/setup-java@v3
         with:
           java-version: '1.8'
+          distribution: 'temurin'
       - name: Install GPG key
         run: |-
           gpg --batch --import-options import-show --import << EOF
