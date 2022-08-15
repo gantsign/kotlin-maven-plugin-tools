@@ -22,7 +22,7 @@ jobs:
       - name: Set up JDK
         uses: actions/setup-java@v3
         with:
-          java-version: '1.8'
+          java-version: '8'
           distribution: 'temurin'
       - name: Build with Maven
         run: .github/scripts/build.sh
@@ -39,7 +39,7 @@ jobs:
       - name: Set up JDK
         uses: actions/setup-java@v3
         with:
-          java-version: '1.8'
+          java-version: '8'
           distribution: 'temurin'
       - name: Install GPG key
         run: |-
