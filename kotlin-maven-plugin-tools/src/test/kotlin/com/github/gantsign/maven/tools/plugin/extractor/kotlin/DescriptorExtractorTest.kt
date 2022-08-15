@@ -60,7 +60,7 @@ class DescriptorExtractorTest {
                 repositorySystem.createArtifact(
                     "org.apache.maven.plugins",
                     "maven-jar-plugin",
-                    "3.2.0",
+                    "3.2.2",
                     "jar"
                 )
             )
