@@ -51,7 +51,7 @@
     <maven-resolver.version>1.8.2</maven-resolver.version>
     <maven.version>3.5.4</maven.version>
     <plexus-containers.version>2.1.1</plexus-containers.version>
-    <sisu.version>0.3.4</sisu.version>
+    <sisu.version>0.3.5</sisu.version>
     <slf4j.version>1.7.36</slf4j.version>
   </properties>
 
