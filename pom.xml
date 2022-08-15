@@ -45,7 +45,7 @@
     <dokka-maven-plugin.version>1.7.10</dokka-maven-plugin.version>
     <jacoco-maven-plugin.version>0.8.8</jacoco-maven-plugin.version>
     <junit.version>4.13.2</junit.version>
-    <kotlin.version>1.6.21</kotlin.version>
+    <kotlin.version>1.7.10</kotlin.version>
     <maven-dependency-plugin.version>3.3.0</maven-dependency-plugin.version>
     <maven-plugin-tools.version>3.6.4</maven-plugin-tools.version>
     <maven-resolver.version>1.8.2</maven-resolver.version>
