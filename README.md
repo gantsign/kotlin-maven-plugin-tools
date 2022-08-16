@@ -1,7 +1,7 @@
 # Kotlin Maven Plugin Tools
 
 [![Release](https://github.com/gantsign/kotlin-maven-plugin-tools/workflows/Build/badge.svg)](https://github.com/gantsign/kotlin-maven-plugin-tools/actions?query=workflow%3ABuild)
-[![codecov](https://codecov.io/gh/gantsign/kotlin-maven-plugin-tools/branch/master/graph/badge.svg)](https://codecov.io/gh/gantsign/kotlin-maven-plugin-tools)
+[![codecov](https://codecov.io/gh/gantsign/kotlin-maven-plugin-tools/branch/main/graph/badge.svg)](https://codecov.io/gh/gantsign/kotlin-maven-plugin-tools)
 [![Known Vulnerabilities](https://snyk.io/test/github/gantsign/kotlin-maven-plugin-tools/badge.svg)](https://snyk.io/test/github/gantsign/kotlin-maven-plugin-tools)
 
 Maven plugin metadata extractor for plugins written in Kotlin.
