@@ -2,7 +2,7 @@ name: Build
 on:
   push:
     branches:
-      - master
+      - main
 env:
   JAVA_TOOL_OPTIONS: >-
     -XX:TieredStopAtLevel=1

@@ -30,7 +30,7 @@
 
   <groupId>com.github.gantsign.maven.plugin-tools</groupId>
   <artifactId>kotlin-maven-plugin-tools-parent</artifactId>
-  <version>0.9.27-SNAPSHOT</version>
+  <version>${revision}</version>
 
   <packaging>pom</packaging>
 
@@ -292,7 +292,7 @@
             <configuration>
               <rules>
                 <requireMavenVersion>
-                  <version>[3.2.5,3.7)</version>
+                  <version>[3.5.0,3.9)</version>
                 </requireMavenVersion>
                 <requireJavaVersion>
                   <version>[11,12)</version>
