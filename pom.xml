@@ -44,11 +44,14 @@
   <properties>
     <dokka-maven-plugin.version>1.7.10</dokka-maven-plugin.version>
     <jacoco-maven-plugin.version>0.8.8</jacoco-maven-plugin.version>
+    <java.require.version>11</java.require.version>
+    <jdeps.multiRelease>11</jdeps.multiRelease>
     <junit.version>4.13.2</junit.version>
     <kotlin.version>1.7.10</kotlin.version>
     <maven-dependency-plugin.version>3.3.0</maven-dependency-plugin.version>
     <maven-plugin-tools.version>3.6.4</maven-plugin-tools.version>
     <maven-resolver.version>1.8.2</maven-resolver.version>
+    <maven.compiler.release>8</maven.compiler.release>
     <maven.version>3.5.4</maven.version>
     <plexus-containers.version>2.1.1</plexus-containers.version>
     <sisu.version>0.3.5</sisu.version>
@@ -250,6 +253,11 @@
     <pluginManagement>
       <plugins>
         <plugin>
+          <groupId>org.codehaus.mojo</groupId>
+          <artifactId>animal-sniffer-maven-plugin</artifactId>
+          <version>1.22</version>
+        </plugin>
+        <plugin>
           <groupId>org.eclipse.sisu</groupId>
           <artifactId>sisu-maven-plugin</artifactId>
           <version>${sisu.version}</version>
@@ -287,7 +295,7 @@
                   <version>[3.2.5,3.7)</version>
                 </requireMavenVersion>
                 <requireJavaVersion>
-                  <version>[1.8,1.9)</version>
+                  <version>[11,12)</version>
                 </requireJavaVersion>
                 <!-- When there are multiple versions of a dependency you have to choose which one to use. -->
                 <dependencyConvergence/>
@@ -321,8 +329,31 @@
                 <banDuplicateClasses>
                   <findAllDuplicates>true</findAllDuplicates>
                 </banDuplicateClasses>
+                <enforceBytecodeVersion>
+                  <maxJdkVersion>8</maxJdkVersion>
+                </enforceBytecodeVersion>
               </rules>
             </configuration>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>animal-sniffer-maven-plugin</artifactId>
+        <configuration>
+          <signature>
+            <groupId>org.codehaus.mojo.signature</groupId>
+            <artifactId>java18</artifactId>
+            <version>1.0</version>
+          </signature>
+        </configuration>
+        <executions>
+          <execution>
+            <id>verify-java8</id>
+            <goals>
+              <goal>check</goal>
+            </goals>
+            <phase>test</phase>
           </execution>
         </executions>
       </plugin>
