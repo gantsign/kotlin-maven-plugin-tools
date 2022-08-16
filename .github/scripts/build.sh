@@ -2,4 +2,8 @@
 
 set -e
 
-./mvnw install -Dinvoker.streamLogs=true --batch-mode --show-version
+./mvnw install \
+    "-Drevision=${GIT_TAG:-development-SNAPSHOT}" \
+    -Dinvoker.streamLogs=true \
+    --batch-mode \
+    --show-version
