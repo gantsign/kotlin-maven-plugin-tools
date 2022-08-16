@@ -46,7 +46,9 @@ private fun createProject(logger: Logger): Project {
         MavenMessageCollector(logger, MessageRenderer.PLAIN_RELATIVE_PATHS)
     )
     return KotlinCoreEnvironment.createForProduction(
-        Disposer.newDisposable(), configuration, EnvironmentConfigFiles.JVM_CONFIG_FILES
+        Disposer.newDisposable(),
+        configuration,
+        EnvironmentConfigFiles.JVM_CONFIG_FILES
     ).project
 }
 

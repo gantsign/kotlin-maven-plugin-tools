@@ -55,7 +55,6 @@ class KotlinMojoDescriptorExtractor @Inject constructor(
 ) : AbstractLogEnabled(), MojoDescriptorExtractor {
 
     override fun execute(request: PluginToolsRequest): List<MojoDescriptor> {
-
         val mojoAnnotatedClasses =
             AnnotationScanner(mojoAnnotationsScanner).scanAnnotations(request)
 
@@ -146,7 +145,6 @@ class KotlinMojoDescriptorExtractor @Inject constructor(
         classDocMap: Map<String, ClassDoc>,
         descendantParams: Map<String, PropertyDoc> = mapOf()
     ): MutableMap<String, PropertyDoc> {
-
         val superClass: ClassDoc? = superClassDoc
 
         val searchSuperClass = when {
@@ -190,7 +188,6 @@ class KotlinMojoDescriptorExtractor @Inject constructor(
         val mojoAnnotatedClass = this
 
         return ExtendedMojoDescriptor().apply {
-
             implementation = mojoAnnotatedClass.className
             language = "java"
 

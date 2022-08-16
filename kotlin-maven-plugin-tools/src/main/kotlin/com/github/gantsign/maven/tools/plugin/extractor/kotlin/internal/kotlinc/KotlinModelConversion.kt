@@ -17,6 +17,8 @@
  * limitations under the License.
  * #L%
  */
+@file:Suppress("ktlint:filename")
+
 package com.github.gantsign.maven.tools.plugin.extractor.kotlin.internal.kotlinc
 
 import com.github.gantsign.maven.tools.plugin.extractor.kotlin.internal.model.ClassDoc
