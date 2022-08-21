@@ -1,13 +1,11 @@
 # Kotlin Maven Plugin Tools
 
 [![Release](https://github.com/gantsign/kotlin-maven-plugin-tools/workflows/Build/badge.svg)](https://github.com/gantsign/kotlin-maven-plugin-tools/actions?query=workflow%3ABuild)
+[![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.github.gantsign.maven.plugin-tools/kotlin-maven-plugin-tools/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.github.gantsign.maven.plugin-tools/kotlin-maven-plugin-tools)
 [![codecov](https://codecov.io/gh/gantsign/kotlin-maven-plugin-tools/branch/main/graph/badge.svg)](https://codecov.io/gh/gantsign/kotlin-maven-plugin-tools)
 [![Known Vulnerabilities](https://snyk.io/test/github/gantsign/kotlin-maven-plugin-tools/badge.svg)](https://snyk.io/test/github/gantsign/kotlin-maven-plugin-tools)
 
 Maven plugin metadata extractor for plugins written in Kotlin.
-
-**Note:** this JAR isn't available from Maven Central, see below for how to
-configure a `pluginRepository` to download the JAR from GitHub Packages.
 
 **This project is still a little new, so please help by reporting any issues you find.**
 
@@ -195,62 +193,8 @@ Your POM will include the following:
         </executions>
       </plugin>
     </plugins>
-
   </build>
-
-  <!--
-    kotlin-maven-plugin-tools isn't available from Maven Central, so you
-    have to add the following plugin repository.
-    Where possible you you should use a repository manager rather than adding
-    the repository directly to your POM.
-  -->
-  <pluginRepositories>
-      <pluginRepository>
-          <!-- id must match the id of the server in settings.xml -->
-          <id>github</id>
-          <name>GitHub Packages</name>
-          <url>https://maven.pkg.github.com/gantsign/kotlin-maven-plugin-tools</url>
-          <snapshots>
-            <enabled>false</enabled>
-          </snapshots>
-      </pluginRepository>
-  </pluginRepositories>
-
 </project>
-```
-
-GitHub Packages repositories require authentication, so you need to specify the
-credentials in your `settings.xml`. You don't need particular permissions, any
-valid GitHub account token will do.
-
-```xml
-<?xml version="1.0" encoding="UTF-8"?>
-<settings xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xmlns="http://maven.apache.org/SETTINGS/1.0.0"
-    xsi:schemaLocation="http://maven.apache.org/SETTINGS/1.0.0
-                          https://maven.apache.org/xsd/settings-1.0.0.xsd">
-  <servers>
-    <server>
-      <!-- This is setup for you if using id "github" with
-           https://github.com/actions/setup-java -->
-      <!-- id must match the id of the pluginRepository -->
-      <id>github</id>
-      <username>${env.GITHUB_ACTOR}</username>
-      <password>${env.GITHUB_TOKEN}</password>
-    </server>
-  </servers>
-
-</settings>
-```
-
-If using GitHub Actions, you also need to pass the `GITHUB_TOKEN` environment
-variable to the build step(s) in your workflow file e.g.:
-
-```yaml
-- name: Build with Maven
-  run: mvn install
-  env:
-    GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 ```
 
 License
