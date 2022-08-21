@@ -3,28 +3,9 @@ name: Verify
 on:
   pull_request: {}
 
-env:
-  JAVA_TOOL_OPTIONS: >-
-    -XX:TieredStopAtLevel=1
-    -XX:+UseParallelGC
-    -Dstyle.color=always
-    -Djansi.force=true
-
 jobs:
   build:
-    name: Maven build
-    runs-on: ubuntu-20.04
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v3
-        with:
-          fetch-depth: 2
-      - name: Set up JDK
-        uses: actions/setup-java@v3
-        with:
-          java-version: '11'
-          distribution: 'temurin'
-      - name: Build with Maven
-        run: .github/scripts/build.sh
-      - name: Code coverage report
-        uses: codecov/codecov-action@v3
+    name: Build
+    uses: gantsign/workflows/.github/workflows/maven-build.yml@v1
+    with:
+      java-version: '11'
