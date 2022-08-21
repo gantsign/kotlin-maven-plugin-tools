@@ -91,10 +91,10 @@ Your POM will include the following:
   </prerequisites>
 
   <properties>
-    <kotlin.version>1.6.21</kotlin.version>
+    <kotlin.version>1.7.10</kotlin.version>
     <maven.compiler.source>1.8</maven.compiler.source>
     <maven.compiler.target>1.8</maven.compiler.target>
-    <maven.version>3.6.2</maven.version>
+    <maven.version>3.6.3</maven.version>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
   </properties>
@@ -118,7 +118,7 @@ Your POM will include the following:
     <dependency>
       <groupId>org.apache.maven.plugin-tools</groupId>
       <artifactId>maven-plugin-annotations</artifactId>
-      <version>3.6.0</version>
+      <version>3.6.4</version>
       <scope>provided</scope>
     </dependency>
     <dependency>
@@ -136,7 +136,7 @@ Your POM will include the following:
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-plugin-plugin</artifactId>
-        <version>3.6.0</version>
+        <version>3.6.4</version>
         <configuration>
           <extractors>
             <!--
@@ -148,7 +148,7 @@ Your POM will include the following:
         </configuration>
         <dependencies>
           <dependency>
-            <!-- Add kotlin-maven-plugin-tools`as a dependency to the maven-plugin-plugin -->
+            <!-- Add kotlin-maven-plugin-tools as a dependency to the maven-plugin-plugin -->
             <groupId>com.github.gantsign.maven.plugin-tools</groupId>
             <artifactId>kotlin-maven-plugin-tools</artifactId>
             <!-- Replace @version@ with the latest kotlin-maven-plugin-tools release -->
