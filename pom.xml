@@ -42,7 +42,7 @@
   </modules>
 
   <properties>
-    <dokka-maven-plugin.version>1.7.10</dokka-maven-plugin.version>
+    <dokka-maven-plugin.version>1.7.20</dokka-maven-plugin.version>
     <jacoco-maven-plugin.version>0.8.8</jacoco-maven-plugin.version>
     <java.require.version>11</java.require.version>
     <jdeps.multiRelease>11</jdeps.multiRelease>
