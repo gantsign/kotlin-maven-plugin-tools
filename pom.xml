@@ -47,7 +47,7 @@
     <java.require.version>11</java.require.version>
     <jdeps.multiRelease>11</jdeps.multiRelease>
     <junit.version>4.13.2</junit.version>
-    <kotlin.version>1.7.20</kotlin.version>
+    <kotlin.version>1.8.0</kotlin.version>
     <maven-dependency-plugin.version>3.3.0</maven-dependency-plugin.version>
     <maven-plugin-tools.version>3.6.4</maven-plugin-tools.version>
     <maven-resolver.version>1.8.2</maven-resolver.version>
