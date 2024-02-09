@@ -104,6 +104,16 @@
           <groupId>org.apache.maven</groupId>
           <artifactId>maven-plugin-descriptor</artifactId>
         </exclusion>
+        <!-- provided by maven.plugin-tools -->
+        <exclusion>
+          <groupId>commons-logging</groupId>
+          <artifactId>commons-logging</artifactId>
+        </exclusion>
+        <!-- provided by maven.plugin-tools -->
+        <exclusion>
+          <groupId>org.ow2.asm</groupId>
+          <artifactId>asm</artifactId>
+        </exclusion>
       </exclusions>
     </dependency>
     <dependency>

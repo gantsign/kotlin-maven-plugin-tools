@@ -34,6 +34,7 @@ import org.apache.maven.plugin.descriptor.Requirement
 import org.apache.maven.repository.RepositorySystem
 import org.apache.maven.tools.plugin.ExtendedMojoDescriptor
 import org.apache.maven.tools.plugin.PluginToolsRequest
+import org.apache.maven.tools.plugin.extractor.GroupKey
 import org.apache.maven.tools.plugin.extractor.MojoDescriptorExtractor
 import org.apache.maven.tools.plugin.extractor.annotations.datamodel.ComponentAnnotationContent
 import org.apache.maven.tools.plugin.extractor.annotations.datamodel.ExecuteAnnotationContent
@@ -66,6 +67,12 @@ class KotlinMojoDescriptorExtractor @Inject constructor(
 
         return mojoAnnotatedClasses.toMojoDescriptors(request.pluginDescriptor)
     }
+
+    override fun getName(): String = "kotlin"
+
+    override fun isDeprecated(): Boolean = false
+
+    override fun getGroupKey(): GroupKey = GroupKey("kotlin", 100)
 
     /**
      * Scan sources to get @since and @deprecated and description of classes and properties.
